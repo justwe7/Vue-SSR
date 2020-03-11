@@ -1,4 +1,5 @@
 ## vue-ssr学习
+一步一步从0开始敲一个vue-ssr项目
 
 ### 基本接入
 1. 安装 `npm install vue vue-server-renderer`
@@ -134,3 +135,17 @@ server.listen(8080)
 > - 在使用 clientManifest 时，自动注入「资源链接(asset links)和资源预加载提示(resource hints)」；
 > - 在嵌入 Vuex 状态进行客户端融合(client-side hydration)时，自动注入以及 XSS 防御。
 > 在之后的指南中介绍相关概念时，我们将详细讨论这些。
+
+### 编写通用代码
+[文档指出需要关注的点](https://ssr.vuejs.org/zh/guide/universal.html)
+
+总结：
+- 将数据进行响应式的过程在服务器上是多余的，所以默认情况下禁用。禁用响应式数据，还可以避免将「数据」转换为「响应式对象」的性能开销。
+- 只有 beforeCreate 和 created 会在服务器端渲染 (SSR) 过程中被调用。这就是说任何其他生命周期钩子函数中的代码只会在客户端执行。
+- 通用代码不可接受特定平台的 API。像 window 或 document，这种仅浏览器可用的全局变量
+- 大多数自定义指令直接操作 DOM，因此会在服务器端渲染 (SSR) 过程中导致错误
+
+
+> 请将副作用代码移动到 beforeMount 或 mounted 生命周期中。例如在其中使用 setInterval 设置 timer
+
+**Vue代码优化的点，在mounted钩子中`this.xxx = 1`不会加入到响应式对象**
