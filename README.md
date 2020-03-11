@@ -38,3 +38,45 @@ renderer.renderToString(app).then(html => {
 ```html
 <div data-server-rendered="true">Hello World</div>
 ```
+
+### 三、与服务器集成
+更改 `index.js`
+```js
+const Vue = require('vue')
+const server = require('express')()
+const renderer = require('vue-server-renderer').createRenderer()
+
+server.get('*', (req, res) => {
+  const app = new Vue({
+    data: {
+      url: req.url
+    },
+    template: `<div>访问的 URL 是： {{ url }}</div>`
+  })
+
+  renderer.renderToString(app, (err, html) => {
+    if (err) {
+      res.status(500).end('Internal Server Error')
+      return
+    }
+    res.end(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head><title>Hello</title></head>
+        <body>${html}</body>
+      </html>
+    `)
+  })
+})
+
+server.listen(8080)
+```
+执行 `node ./index.js`，打开浏览器查看页面 `http://localhost:8080/vuessr`
+
+页面展示：
+
+![页面展示](https://img.lihx.top/images/2020/03/11/image.png)
+
+查看源码：
+
+![查看源码](https://img.lihx.top/images/2020/03/11/image09713.png)
