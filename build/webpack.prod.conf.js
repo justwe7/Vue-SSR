@@ -10,9 +10,9 @@ module.exports = merge(baseConfig, {
     rules: []
   },
   plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin()/* ,
     new CleanWebpackPlugin({
       verbose: true
-    })
+    }) */
   ]
 })

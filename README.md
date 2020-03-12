@@ -408,3 +408,15 @@ src
 ├── entry-client.js # 仅运行于浏览器
 └── entry-server.js # 仅运行于服务器
 ```
+
+先改 `src/entry-client.js`:
+
+`src/app.js`:
+
+`build/webpack.base.conf.js`修改entry:
+```js
+entry: {
+    bundle: path.resolve(__dirname, '../src/entry-client.js')
+},
+```
+npm run dev 看完再改回来
