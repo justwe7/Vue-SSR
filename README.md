@@ -137,15 +137,108 @@ server.listen(8080)
 > 在之后的指南中介绍相关概念时，我们将详细讨论这些。
 
 ### 编写通用代码
-[文档指出需要关注的点](https://ssr.vuejs.org/zh/guide/universal.html)
+**总结：**
 
-总结：
 - 将数据进行响应式的过程在服务器上是多余的，所以默认情况下禁用。禁用响应式数据，还可以避免将「数据」转换为「响应式对象」的性能开销。
 - 只有 beforeCreate 和 created 会在服务器端渲染 (SSR) 过程中被调用。这就是说任何其他生命周期钩子函数中的代码只会在客户端执行。
 - 通用代码不可接受特定平台的 API。像 window 或 document，这种仅浏览器可用的全局变量
 - 大多数自定义指令直接操作 DOM，因此会在服务器端渲染 (SSR) 过程中导致错误
 
+[文档指出需要关注的点](https://ssr.vuejs.org/zh/guide/universal.html)
 
 > 请将副作用代码移动到 beforeMount 或 mounted 生命周期中。例如在其中使用 setInterval 设置 timer
 
 **Vue代码优化的点，在mounted钩子中`this.xxx = 1`不会加入到响应式对象**
+
+### 四、开始接入webpack打包vue
+
+#### 1. 先加webpack打包，不加`vue-loader`
+
+1. 安装webpack `npm i webpack webpack-cli -D`
+2. 创建webpack配置文件：
+   - 创建 build 目录
+   - `touch webpack.base.conf.js webpack.dev.conf.js webpack.prod.conf.js build.js`
+   - >webpack.base.conf.js 是最基础的打包配置，是开发环境和生产环境都要用到的配置。webpack.dev.conf.js 就是在开发环境要使用的配置。webpack.prod.conf.js 就是在生产环境要使用的配置了。build.js 是通过 Node 接口进行打包的脚本
+
+`build/build.js`代码：
+```js
+webpack(config, (err, stats) => {
+  if (err || stats.hasErrors()) {
+    // 在这里处理错误
+    console.error(err)
+    return
+  }
+  // 处理完成
+  console.log(
+    stats.toString({
+      chunks: false, // 使构建过程更静默无输出
+      colors: true // 在控制台展示颜色
+    })
+  )
+})
+```
+
+`build/webpack.base.conf.js`代码：
+```js
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+module.exports = {
+  entry: {
+    bundle: path.resolve(__dirname, '../src/index.js')
+  },
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+    filename: '[name].[hash].js'
+  },
+  module: {
+    rules: []
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../index.template.html')
+    })
+  ]
+}
+
+```
+
+`build/webpack.dev.conf.js`代码：
+```js
+const merge = require('webpack-merge')
+const path = require('path')
+const baseConfig = require('./webpack.base.conf')
+module.exports = merge(baseConfig, {
+  mode: 'development',
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: path.resolve(__dirname, '../dist'),
+    open: true
+  }
+})
+```
+
+`build/webpack.prod.conf.js`代码：
+
+[clean-webpack-plugin V2有改动](https://github.com/johnagan/clean-webpack-plugin/issues/106)
+```js
+const merge = require('webpack-merge')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const path = require('path')
+const baseConfig = require('./webpack.base.conf')
+module.exports = merge(baseConfig, {
+  mode: 'production',
+  devtool: 'source-map',
+  module: {
+    rules: []
+  },
+  plugins: [
+    new CleanWebpackPlugin()
+  ]
+})
+```
+
+创建 `src/index.js`,内容就: `console.log(1)` 好了
+
+`npm run dev` 可以看到浏览器控制台有打印 1。
+
+`npm run build` 可以看到dist目录打包代码成功
