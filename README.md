@@ -348,3 +348,63 @@ new Vue({
 ![hello](https://img.lihx.top/images/2020/03/12/image.png)
 
 webpack配置暂时先到这里，目前的目标是能打包`.vue`即可。后续的优化照着[这里继续](https://juejin.im/post/5bc30d5fe51d450ea1328877)
+
+### pre 五、避免状态单例
+> 当编写纯客户端 (client-only) 代码时，我们习惯于每次在新的上下文中对代码进行取值。但是，Node.js 服务器是一个长期运行的进程。当我们的代码进入该进程时，它将进行一次取值并留存在内存中。这意味着如果创建一个单例对象，它将在每个传入的请求之间共享。
+
+> 如基本示例所示，我们为每个请求创建一个新的根 Vue 实例。这与每个用户在自己的浏览器中使用新应用程序的实例类似。如果我们在多个请求之间使用一个共享的实例，很容易导致交叉请求状态污染 (cross-request state pollution)。
+
+创建 `src/app.js`:
+```js
+// app.js
+const Vue = require('vue')
+
+module.exports = function createApp(context) {
+  return new Vue({
+    data: {
+      url: context.url
+    },
+    template: `<div>访问的 URL 是： {{ url }}</div>`
+  })
+}
+```
+修改 `index.js`，如下:
+```js
+const server = require('express')()
+const renderer = require('vue-server-renderer').createRenderer({
+  template: require('fs').readFileSync('./index.template.html', 'utf-8')
+})
+const createApp = require('./src/app')
+
+server.get('*', (req, res) => {
+  const context = {
+    title: '上下文title',
+    tag: `<div>插入的上下文标签</div>`
+  }
+  const app = createApp({ url: req.url })
+
+  renderer.renderToString(app, context, (err, html) => {
+    if (err) {
+      res.status(500).end('Internal Server Error')
+      return
+    }
+    res.end(html)
+  })
+})
+
+server.listen(8080)
+```
+
+### 五、SSR初步结合webpack源码
+
+```
+src
+├── components
+│   ├── Foo.vue
+│   ├── Bar.vue
+│   └── Baz.vue
+├── App.vue
+├── app.js # 通用 entry(universal entry)
+├── entry-client.js # 仅运行于浏览器
+└── entry-server.js # 仅运行于服务器
+```
