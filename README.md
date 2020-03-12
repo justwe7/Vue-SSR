@@ -242,3 +242,109 @@ module.exports = merge(baseConfig, {
 `npm run dev` 可以看到浏览器控制台有打印 1。
 
 `npm run build` 可以看到dist目录打包代码成功
+
+#### 2. webpack 引入基础的loader
+
+##### babel-loader
+`npm i babel-loader@7 babel-core babel-preset-env -D`
+然后在 webpack.base.conf.js 的 module.rules 中新增如下对象：
+```js
+{
+  test: /\.js$/,
+  use: 'babel-loader',
+  exclude: /node_modules/
+}
+```
+我们还需要添加一个配置文件（.babelrc）在根目录下：
+```js
+{
+  "presets": [
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+      }
+    }]
+  ]
+}
+```
+
+#####  vue-loader
+`npm i vue-loader css-loader vue-style-loader vue-template-compiler -D`
+
+然后我们配置 webpack.base.conf.js，写入以下代码到该文件的 module.rules 属性当中：
+```
+{
+  test: /\.vue$/,
+  loader: 'vue-loader'
+},
+{
+  test: /\.css$/,
+  use: ['vue-style-loader', 'css-loader']
+}
+```
+
+只有这一处配置是不行的，根据 vue-loader 官网的说明，我们还需要配置一个插件，然后还需要配置 resolve.alias 别名，不然 Webpack 没法找到 Vue 模块。
+配置插件，首先在文件头部引入：
+
+`const VueLoaderPlugin = require('vue-loader/lib/plugin');`
+
+然后在 plugins 数组中添加这个插件对象：
+
+`new VueLoaderPlugin()`
+
+随后我们还要配置别名，将 resolve.alias 配置为如下对象：
+
+```js
+{
+  'vue$': 'vue/dist/vue.esm.js',
+  '@': path.resolve(__dirname, '../src'),
+}
+```
+
+这可以使得 Webpack 很方便的找到 Vue，我们在 JavaScript 文件中引入依赖的时候，也可以方便地使用 @ 来代替 src，省去了写文件路径的麻烦。
+
+
+##### 验证是否可用
+修改`src/index.js`： 
+```js
+import Vue from 'vue'
+import App from './App'
+
+new Vue({
+  el: '#app',
+  template: '<App/>',
+  components: { App }
+})
+```
+然后在同级目录下创建一个 App.vue 文件，内容如下：
+```html
+<template>
+  <h1>Hello World!</h1>
+</template>
+
+<script>
+  export default {
+    name: 'App'
+  }
+</script>
+
+<style>
+  html, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+</style>
+```
+
+哦对了！`index.template.html` 也要加一个节点 `<div id="app"></div>`
+
+然后执行 `npm run dev`
+
+终于成功啦！
+
+![hello](https://img.lihx.top/images/2020/03/12/image.png)
+
+webpack配置暂时先到这里，目前的目标是能打包`.vue`即可。后续的优化照着[这里继续](https://juejin.im/post/5bc30d5fe51d450ea1328877)
