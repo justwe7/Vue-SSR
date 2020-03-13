@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <h1>Hello World!</h1>
     <router-link to="/">Foo</router-link>
     <router-link to="/Bar">Bar</router-link>

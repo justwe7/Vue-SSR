@@ -13,7 +13,7 @@ const clientManifest = require('./dist/vue-ssr-client-manifest.json') // 用于�
 
 const renderer = createBundleRenderer(bundle, {
   runInNewContext: false,
-  template: fs.readFileSync('./index.template.html', 'utf-8'),
+  template: fs.readFileSync('./public/index.template.html', 'utf-8'),
   clientManifest
 })
 
@@ -30,17 +30,20 @@ function renderToString(context) {
 }
 
 const resolve = file => path.resolve(__dirname, file)
-const serve = (path, cache) => express.static(resolve(path), {
-  maxAge: cache ? 1000 * 60 * 60 * 24 * 30 : 0
-})
+const serve = (path, cache) =>
+  express.static(resolve(path), {
+    maxAge: cache ? 1000 * 60 * 60 * 24 * 30 : 0
+  })
 
-server.use('/bundle.js', serve('./dist/bundle.js', true))
+/* 定义静态目录，否则会导致所有文件都通过vue-router来查找 */
+server.use('/css', express.static(resolve('./dist/css')))
+server.use('/js', express.static(resolve('./dist/js')))
 
 server.get('*', async (req, res) => {
   const context = {
     url: req.url,
     title: '上下文title',
-    tag: `<div>插入的上下文标签</div>`
+    tag: `<div>SSR插入的标签</div>`
   }
 
   try {
@@ -51,7 +54,6 @@ server.get('*', async (req, res) => {
     console.log(error)
     res.status(500).end('Internal Server Error')
   }
-  
 })
 
 server.listen(8080)
