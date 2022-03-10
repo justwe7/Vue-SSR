@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 style="color: red">Bar</h1>
+    <h1 style="color: blue">Bar</h1>
     {{ bar }}
     <hr>
-    {{ foo }}
+    <!-- {{ foo }} -->
     <hr>
     {{ itemList }}
   </div>
