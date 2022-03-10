@@ -8,15 +8,34 @@ const path = require('path')
 const { createBundleRenderer } = require('vue-server-renderer')
 const bundle = require('../dist/vue-ssr-server-bundle.json') // 用于服务端渲染的渲染数据
 const clientManifest = require('../dist/vue-ssr-client-manifest.json') // 用于客户端的渲染数据
-
+const isProd = process.env.NODE_ENV === 'production'
 // const createApp = require('./src/app')
 
-const renderer = createBundleRenderer(bundle, {
-  runInNewContext: false,
-  template: fs.readFileSync('./public/index.template.html', 'utf-8'),
-  clientManifest
-})
+let renderer
+let readyPromise
+const templatePath = resolve('./src/index.template.html')
+// 生产环境使用服务端构建的包进行渲染
+if (isProd) {
+  renderer = createBundleRenderer(bundle, {
+    runInNewContext: false,
+    template: fs.readFileSync('./public/index.template.html', 'utf-8'),
+    clientManifest
+  })
 
+} else {
+  // In development: setup the dev server with watch and hot-reload,
+  // and create a new renderer on bundle / index template update.
+  // readyPromise = require('./build/setup-dev-server')(
+  //   app,
+  //   templatePath,
+  //   (bundle, options) => {
+  //     renderer = createRenderer(bundle, options)
+  //   }
+  // )
+}
+
+
+/* 生成服务端渲染后的html内容string */
 function renderToString(context) {
   return new Promise((resolve, reject) => {
     renderer.renderToString(context, (err, html) => {
