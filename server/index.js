@@ -6,8 +6,8 @@ const path = require('path')
 //   template: require('fs').readFileSync('./index.template.html', 'utf-8')
 // })
 const { createBundleRenderer } = require('vue-server-renderer')
-const bundle = require('./dist/vue-ssr-server-bundle.json') // 用于服务端渲染的渲染数据
-const clientManifest = require('./dist/vue-ssr-client-manifest.json') // 用于客户端的渲染数据
+const bundle = require('../dist/vue-ssr-server-bundle.json') // 用于服务端渲染的渲染数据
+const clientManifest = require('../dist/vue-ssr-client-manifest.json') // 用于客户端的渲染数据
 
 // const createApp = require('./src/app')
 
@@ -36,8 +36,8 @@ const serve = (path, cache) =>
   })
 
 /* 定义静态目录，否则会导致所有文件都通过vue-router来查找 */
-server.use('/css', express.static(resolve('./dist/css')))
-server.use('/js', express.static(resolve('./dist/js')))
+server.use('/css', express.static(resolve('../dist/css')))
+server.use('/js', express.static(resolve('../dist/js')))
 
 server.get('*', async (req, res) => {
   const context = {
@@ -56,4 +56,4 @@ server.get('*', async (req, res) => {
   }
 })
 
-server.listen(8080)
+server.listen(3000)
