@@ -1,48 +1,20 @@
 {
   "name": "vue-ssr",
   "version": "1.0.0",
-  "description": "vue-ssr-le",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server",
-    "dev:client": "cross-env NODE_ENV=development webpack-dev-server --history-api-fallback --inline --progress --config ./build/webpack.dev.conf.js",
-    "build": "cross-env NODE_ENV=production node ./build/build.js",
-    "build:ssr": "cross-env NODE_ENV=production WEBPACK_TARGET=server node ./build/build.js",
-    "publish": "npm run build && npm run build:ssr"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justwe7/Vue-SSR.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^0.26.1",
-    "chokidar": "^3.5.3",
-    "express": "^4.17.1",
-    "lru-cache": "^7.4.2",
-    "vue": "^2.6.11",
-    "vue-router": "^3.1.6",
-    "vue-server-renderer": "^2.6.11",
-    "vuex": "^3.6.2",
-    "webpack-dev-middleware": "^1.12.2",
-    "webpack-hot-middleware": "^2.25.1"
+  "bugs": {
+    "url": "https://github.com/justwe7/Vue-SSR/issues"
   },
-  "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "cross-env": "^7.0.2",
-    "css-loader": "^3.4.2",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.7.0",
-    "nodemon": "^2.0.15",
-    "style-loader": "^0.23.1",
-    "vue-loader": "^15.9.0",
-    "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.11",
-    "vuex-router-sync": "^5.0.0",
-    "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3",
-    "webpack-merge": "^4.2.2",
-    "webpack-node-externals": "^1.7.2"
-  }
+  "homepage": "https://github.com/justwe7/Vue-SSR#readme"
 }
