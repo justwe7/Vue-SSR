@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -96,5 +97,6 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, '../src/index.spa.html')
     }),
+    new FriendlyErrorsWebpackPlugin(), // 输出美化
   ]
 }
