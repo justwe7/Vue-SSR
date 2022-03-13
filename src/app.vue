@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     handleClick () {
-      alert(8)
+      console.log(8)
     }
   }
 }
