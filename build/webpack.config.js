@@ -2,15 +2,19 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
+  resolve: {
+    extensions: ['.js', '.vue'],
+  },
   entry: {
     // 'main': ['@babel/polyfill', './src/index.js'],
     main: './src/index.js',
   },
   output: {
     // filename: 'js/[name].js',
-    filename: 'js/[name]-[hash:8].js',
+    filename: 'js/[name]-[fullhash:8].js',
     path: path.resolve(__dirname, '../dist'),
   },
   module: {
@@ -57,7 +61,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 1024, // 限制转base64的图片为1kb(1024b)，超过1k的输出文件, 设置此项需要安装依赖：file-loader
-              name: 'images/[name]-[hash:8].[ext]',
+              name: 'images/[name]-[fullhash:8].[ext]',
             }
           }
         ]
@@ -69,14 +73,20 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 10240, // 10k
-              name: 'fonts/[name]-[hash:8].[ext]'
+              name: 'fonts/[name]-[fullhash:8].[ext]'
             }
           }
         ]
       },
+      /* vue */
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      }
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       inject: 'body',
@@ -84,7 +94,7 @@ module.exports = {
       template: path.resolve(__dirname, '../src/index.spa.html')
     }),
     new MiniCssExtractPlugin({
-      filename: "[name]-[hash:8].css",
+      filename: "[name]-[fullhash:8].css",
       // chunkFilename: "[id].css",
     })
   ]
