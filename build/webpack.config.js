@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -27,16 +27,24 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           // MiniCssExtractPlugin.loader, // 提取css文件,不与style-loader共存
-          isProd ?
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                publicPath: (resourcePath, context) => {
-                  return path.relative(path.dirname(resourcePath), context) + "/";
-                },
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: (resourcePath, context) => {
+                return path.relative(path.dirname(resourcePath), context) + "/";
               },
-            } :
-            'style-loader', // 打包css到style标签
+            },
+          },
+          // isProd ?
+          //   {
+          //     loader: MiniCssExtractPlugin.loader,
+          //     options: {
+          //       publicPath: (resourcePath, context) => {
+          //         return path.relative(path.dirname(resourcePath), context) + "/";
+          //       },
+          //     },
+          //   } :
+          //   'style-loader', // 打包css到style标签
           { loader: 'css-loader', options: { esModule: false } },
           {
             loader: 'postcss-loader',
@@ -97,6 +105,11 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, '../src/index.spa.html')
     }),
-    new FriendlyErrorsWebpackPlugin(), // 输出美化
+    // new FriendlyErrorsWebpackPlugin({
+    //   // compilationSuccessInfo: {
+    //   //   messages: ['You application is running here http://localhost:3000'],
+    //   //   notes: ['Some additional notes to be displayed upon successful compilation']
+    //   // },
+    // }), // 输出美化
   ]
 }
