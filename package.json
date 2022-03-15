@@ -6,7 +6,9 @@
     "serve": "nodemon server",
     "dev": "node build/dev-server.js",
     "dev2": "webpack serve --config build/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production webpack --config build/webpack.prod.js",
+    "build": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.prod.js",
+    "build:all": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.prod.js && webpack --config build/webpack.dev.js",
+    "build3": "cross-env NODE_ENV=production webpack --config build/webpack.dev.js",
     "build2": "cross-env NODE_ENV=production webpack --config build/webpack.config.js"
   },
   "repository": {
@@ -46,6 +48,7 @@
     "vue-router": "^3.5.3",
     "vue-style-loader": "^4.1.3",
     "vue-template-compiler": "^2.6.14",
+    "vuex-router-sync": "^5.0.0",
     "webpack": "^5.70.0",
     "webpack-chain": "^6.5.1",
     "webpack-cli": "^4.9.2",
@@ -53,8 +56,11 @@
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.17.2",
+    "axios": "^0.26.1",
+    "koa-static": "^5.0.0",
     "vue": "^2.6.14",
-    "vue-server-renderer": "^2.6.14"
+    "vue-server-renderer": "^2.6.14",
+    "vuex": "^3.6.2"
   },
   "browserslist": [
     "> 1%",

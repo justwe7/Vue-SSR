@@ -1,12 +1,24 @@
 <template>
   <div class="detail">
     页面 detail
+    <ul>
+      <li v-for="item in itemList">{{ item }}</li>
+    </ul>
   </div>
 </template>
 <script type="text/ecmascript-6">
 export default {
+   async asyncData ({ store }) {
+    await store.dispatch('fetchItem', { id: 1 })
+    return {}
+  },
   data () {
     return {}
+  },
+  computed: {
+    itemList () {
+      return this.$store.state.items
+    }
   },
   methods: {}
 }

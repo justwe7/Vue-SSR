@@ -1,24 +1,16 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'productionTerserPlugin'
+const IN_SERVER = process.env.APP_RENDER === 'server'
 
-module.exports = {
+const config = {
   resolve: {
     extensions: ['.js', '.vue'],
-  },
-  entry: {
-    // 'main': ['@babel/polyfill', './src/index.js'],
-    bundle: isProd ? path.resolve(__dirname, '../src/entry-server.js') : path.resolve(__dirname, '../src/entry-client.js'),
-    // main: './src/index.js',
-  },
-  output: {
-    // filename: 'js/[name].js',
-    filename: 'js/[name]-[fullhash:8].js',
-    path: path.resolve(__dirname, '../dist'),
   },
   module: {
     rules: [
@@ -27,14 +19,6 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           // MiniCssExtractPlugin.loader, // 提取css文件,不与style-loader共存
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: (resourcePath, context) => {
-                return path.relative(path.dirname(resourcePath), context) + "/";
-              },
-            },
-          },
           // isProd ?
           //   {
           //     loader: MiniCssExtractPlugin.loader,
@@ -99,12 +83,37 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     // new FriendlyErrorsWebpackPlugin({
     //   // compilationSuccessInfo: {
     //   //   messages: ['You application is running here http://localhost:3000'],
     //   //   notes: ['Some additional notes to be displayed upon successful compilation']
     //   // },
     // }), // 输出美化
-  ]
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false
+          }
+        }
+      })
+    ]
+  }
 }
+
+// SSR 渲染报错 -> MiniCssExtractPlugin@2.6.0 https://github.com/webpack-contrib/mini-css-extract-plugin/issues/500
+!IN_SERVER && config.module.rules[0].use.unshift({
+  loader: MiniCssExtractPlugin.loader,
+  options: {
+    // publicPath: (resourcePath, context) => {
+    //   return path.relative(path.dirname(resourcePath), context) + "/";
+    // },
+  },
+})
+
+module.exports = config

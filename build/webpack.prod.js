@@ -7,37 +7,34 @@ const path = require('path');
 const baseConfig = require('./webpack.config.js')
 const resolve = file => path.resolve(__dirname, file)
 
+// server
+
 // const config = new Config()
 module.exports = merge(baseConfig, {
   mode: 'production',
   target: 'node',
+  node: undefined, // mock数据 保证使用 node 中全局变量 是否要处理
+  entry: {
+    bundle: resolve('../src/entry-server.js')
+  },
+  output: {
+    filename: 'js/[name]-[fullhash:8].js',
+    path: resolve('../dist'),
+  },
   output: {
     path: resolve('../dist'),
     filename: '[name].js',
     libraryTarget: 'commonjs2' // 使用 node 模块化机制导出
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "[name]-[fullhash:8].css",
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "[name]-[fullhash:8].css",
+    // }),
     new VueSSRServerPlugin(),
     new HtmlWebpackPlugin({
       inject: 'body',
-      filename: 'index.html',
-      template: path.resolve(__dirname, '../public/index.ssr.html')
+      // filename: 'index.html',
+      template: resolve('../public/index.ssr.html')
     }),
-  ],
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        extractComments: false,
-        terserOptions: {
-          format: {
-            comments: false
-          }
-        }
-      })
-    ]
-  }
+  ]
 })

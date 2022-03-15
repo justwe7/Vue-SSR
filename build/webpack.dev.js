@@ -1,13 +1,27 @@
+const path = require('path')
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const baseConfig = require('./webpack.config.js')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
+const resolve = file => path.resolve(__dirname, file)
+
+// 客户端打包（后续将dev提取至dev-server.js
 module.exports = merge(baseConfig, {
-  mode: 'development',
-  devtool: 'inline-source-map',
-  devServer: {
+  mode: 'production',
+  // publicPath: '/',
+  // mode: 'development',
+  // devtool: 'inline-source-map',
+  entry: {
+    bundle: resolve('../src/entry-client.js'),
+  },
+  output: {
+    filename: 'js/[name]-[fullhash:8].js',
+    path: resolve('../dist'),
+  },
+  /* devServer: {
     client: {
       logging: 'error',
     },
@@ -19,18 +33,19 @@ module.exports = merge(baseConfig, {
     port: 3000,
     proxy: {
     }
-  },
+  }, */
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name]-[fullhash:8].css",
+      filename: 'css/[name]-[fullhash:8].css',
       // filename: '[name].css',
       // chunkFilename: '[id].css',
     }),
     new HtmlWebpackPlugin({
       inject: 'body',
       filename: 'index.html',
-      template: path.resolve(__dirname, '../public/index.spa.html')
+      template: resolve('../public/index.spa.html')
     }),
+    new VueSSRClientPlugin()
     // new webpack.HotModuleReplacementPlugin(), // v4 [webpack-dev-server] "hot: true" automatically applies HMR plugin, you don't have to add it manually to your webpack configuration.
   ],
 })

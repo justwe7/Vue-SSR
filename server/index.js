@@ -1,6 +1,9 @@
 const Koa = require('koa')
 const app = new Koa()
 const SSRRender = require('./ssr')
+const middleware = require('./middleware')
+
+middleware(app)
 
 SSRRender(app)
 
