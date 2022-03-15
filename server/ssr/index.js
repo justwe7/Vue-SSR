@@ -1,13 +1,25 @@
 
 const fs = require('fs')
 const path = require('path')
+const resolve = file => path.resolve(__dirname, file)
 const Vue = require('vue')
 const Router = require('koa-router')
 // const Router = require('@koa/router')
 const { createBundleRenderer } = require('vue-server-renderer')
-const renderer = require('vue-server-renderer').createRenderer()
+// const renderer = require('vue-server-renderer').createRenderer()
 const isProd = process.env.NODE_ENV === 'production'
 const router = new Router()
+
+
+const serverBundle = resolve('../../dist/vue-ssr-server-bundle.json')
+
+
+const renderer = createBundleRenderer(serverBundle, {
+  runInNewContext: false, // 推荐
+  template: require('fs').readFileSync('./public/index.ssr.html', 'utf-8'),
+  // template, // （可选）页面模板
+  // clientManifest // （可选）客户端构建 manifest
+})
 
 module.exports = app => {
   router.get('*', async (ctx, next) => {
@@ -25,13 +37,7 @@ module.exports = app => {
             reject(err)
             return
           }
-          resolve(`
-            <!DOCTYPE html>
-            <html lang="en">
-              <head><title>Hello</title></head>
-              <body>${html}</body>
-            </html>
-          `)
+          resolve(html)
         })
       })
     }

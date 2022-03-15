@@ -1,5 +1,4 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
@@ -13,7 +12,8 @@ module.exports = {
   },
   entry: {
     // 'main': ['@babel/polyfill', './src/index.js'],
-    main: './src/index.js',
+    bundle: isProd ? path.resolve(__dirname, '../src/entry-server.js') : path.resolve(__dirname, '../src/entry-client.js'),
+    // main: './src/index.js',
   },
   output: {
     // filename: 'js/[name].js',
@@ -100,11 +100,6 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      inject: 'body',
-      filename: 'index.html',
-      template: path.resolve(__dirname, '../src/index.spa.html')
-    }),
     // new FriendlyErrorsWebpackPlugin({
     //   // compilationSuccessInfo: {
     //   //   messages: ['You application is running here http://localhost:3000'],
