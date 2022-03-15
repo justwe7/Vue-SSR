@@ -5,10 +5,8 @@
   "scripts": {
     "serve": "cross-env NODE_ENV=production nodemon server",
     "dev": "node build/dev-server.js",
-    "dev2": "webpack serve --config build/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.prod.js",
-    "build:all": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.prod.js && webpack --config build/webpack.dev.js",
-    "build3": "cross-env NODE_ENV=production webpack --config build/webpack.dev.js",
+    "build": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.server.js",
+    "build:all": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.server.js && webpack --config build/webpack.client.js",
     "build2": "cross-env NODE_ENV=production webpack --config build/webpack.config.js"
   },
   "repository": {

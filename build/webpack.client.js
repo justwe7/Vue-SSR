@@ -8,10 +8,8 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
 const resolve = file => path.resolve(__dirname, file)
 
-// 客户端打包（后续将dev提取至dev-server.js
 module.exports = merge(baseConfig, {
   mode: 'production',
-  // publicPath: '/',
   // mode: 'development',
   // devtool: 'inline-source-map',
   entry: {
@@ -43,7 +41,7 @@ module.exports = merge(baseConfig, {
     }),
     new HtmlWebpackPlugin({
       inject: 'body',
-      filename: 'index.html',
+      filename: 'index.spa.html',
       template: resolve('../public/index.spa.html')
     }),
     new VueSSRClientPlugin()
