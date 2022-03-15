@@ -18,6 +18,7 @@ module.exports = merge(baseConfig, {
     bundle: resolve('../src/entry-client.js'),
   },
   output: {
+    publicPath: '/',
     filename: 'js/[name]-[fullhash:8].js',
     path: resolve('../dist'),
   },

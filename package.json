@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "serve": "nodemon server",
+    "serve": "cross-env NODE_ENV=production nodemon server",
     "dev": "node build/dev-server.js",
     "dev2": "webpack serve --config build/webpack.dev.js",
     "build": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.prod.js",
