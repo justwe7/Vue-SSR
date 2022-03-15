@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "serve": "nodemon server",
     "dev": "node build/dev-server.js",
     "dev2": "webpack serve --config build/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config build/webpack.prod.js",
@@ -32,7 +33,10 @@
     "file-loader": "^6.2.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^5.5.0",
+    "koa": "^2.13.4",
+    "koa-router": "^7.4.0",
     "mini-css-extract-plugin": "^2.6.0",
+    "nodemon": "^2.0.15",
     "postcss-loader": "^6.2.1",
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
@@ -49,7 +53,8 @@
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.17.2",
-    "vue": "^2.6.14"
+    "vue": "^2.6.14",
+    "vue-server-renderer": "^2.6.14"
   },
   "browserslist": [
     "> 1%",
