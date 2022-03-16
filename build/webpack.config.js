@@ -106,14 +106,15 @@ const config = {
   }
 }
 
+!IN_SERVER && config.module.rules[0].use.unshift('vue-style-loader')
 // SSR 渲染报错 -> MiniCssExtractPlugin@2.6.0 https://github.com/webpack-contrib/mini-css-extract-plugin/issues/500
-!IN_SERVER && config.module.rules[0].use.unshift({
-  loader: MiniCssExtractPlugin.loader,
-  options: {
-    // publicPath: (resourcePath, context) => {
-    //   return path.relative(path.dirname(resourcePath), context) + "/";
-    // },
-  },
-})
+// !IN_SERVER && config.module.rules[0].use.unshift({
+//   loader: MiniCssExtractPlugin.loader,
+//   options: {
+//     // publicPath: (resourcePath, context) => {
+//     //   return path.relative(path.dirname(resourcePath), context) + "/";
+//     // },
+//   },
+// })
 
 module.exports = config
