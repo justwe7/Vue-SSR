@@ -1,29 +1,15 @@
 const fs = require('fs')
 const path = require('path')
-const MFS = require('memory-fs') // 从内存读取文件
+const MFS = require('memory-fs')
 const webpack = require('webpack')
 const chokidar = require('chokidar')
 const clientConfig = require('./webpack.dev.conf')
 const serverConfig = require('./webpack.prod.conf')
 
-// const mfs = new MFS()
-// mfs.mkdirpSync("/Users/debugger/bugfolder/www/github/Vue-SSR/dist")
-// console.log(path.join(clientConfig.output.path, 'vue-ssr-server-bundle.json'))
-// console.log(mfs.readFileSync(path.join(clientConfig.output.path, 'vue-ssr-server-bundle.json')))
-// console.log(mfs.readFileSync('/Users/debugger/bugfolder/www/github/Vue-SSR/dist/vue-ssr-server-bundle.json'))
-// return false
-// console.log(fs.readFileSync(path.join(clientConfig.output.path, 'vue-ssr-server-bundle.json')))
-// readFile(mfs, 'vue-ssr-server-bundle.json')
-
-// const readFile = (fs, file) => {
-const readFile = (fss, file) => {
-  // console.log(111, clientConfig.output.path)
+const readFile = (fs, file) => {
   try {
-    // console.log(222, fss.readFileSync(path.join(clientConfig.output.path, file), 'utf-8'))
     return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8')
-  } catch (e) {
-    console.log(333, e)
-  }
+  } catch (e) {}
 }
 
 module.exports = function setupDevServer (app, templatePath, cb) {
@@ -95,5 +81,5 @@ module.exports = function setupDevServer (app, templatePath, cb) {
     update()
   })
 
-  return readyPromise
+  return { readyPromise, fs: devMiddleware.fileSystem }
 }

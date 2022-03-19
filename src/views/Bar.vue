@@ -1,11 +1,10 @@
 <template>
   <div>
-    <h1 style="color: blue">Bar</h1>
+    <h1 style="color: blue">Bar2</h1>
     {{ bar }}
-    <hr>
     <!-- {{ foo }} -->
-    <hr>
-    {{ itemList }}
+    <div class="item" v-for="item in itemList">{{ item }}</div>
+    <!-- {{ itemList }} -->
   </div>
 </template>
 
@@ -41,5 +40,7 @@ export default {
 </script>
 
 <style>
-
+.item {
+  background-color: red;
+}
 </style>
