@@ -1,12 +1,11 @@
-const path = require('path')
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
-const baseConfig = require('./webpack.config.js')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
+const { resolve } = require('./utils')
 
-const resolve = file => path.resolve(__dirname, file)
+const baseConfig = require('./webpack.config.js')
 
 module.exports = merge(baseConfig, {
   mode: 'production',

@@ -1,11 +1,11 @@
 
 const fs = require('fs')
-const path = require('path')
-const resolve = file => path.resolve(__dirname, file)
 const Router = require('koa-router')
+const { createBundleRenderer } = require('vue-server-renderer')
+const resolve = file => require('path').resolve(__dirname, file)
+
 const router = new Router()
 // const Router = require('@koa/router')
-const { createBundleRenderer } = require('vue-server-renderer')
 const isProd = process.env.NODE_ENV === 'production'
 
 let templatePath // 渲染的html模板

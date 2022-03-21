@@ -3,9 +3,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
-const path = require('path');
+const { resolve } = require('./utils')
+
 const baseConfig = require('./webpack.config.js')
-const resolve = file => path.resolve(__dirname, file)
 
 // server
 baseConfig.module.rules[0].use[0] = 'vue-style-loader'
