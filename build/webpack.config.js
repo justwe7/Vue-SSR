@@ -3,9 +3,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
-const isProd = process.env.NODE_ENV === 'productionTerserPlugin'
+const isProd = process.env.NODE_ENV === 'production'
 const IN_SERVER = process.env.APP_RENDER === 'server'
 
 const config = {
@@ -29,14 +28,14 @@ const config = {
           //   },
           // MiniCssExtractPlugin.loader, // 提取css文件,不与style-loader共存
           // isProd ?
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                publicPath: (resourcePath, context) => {
-                  return path.relative(path.dirname(resourcePath), context) + "/";
-                },
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: (resourcePath, context) => {
+                return path.relative(path.dirname(resourcePath), context) + "/";
               },
             },
+          },
           //   'style-loader', // 打包css到style标签
           { loader: 'css-loader', options: { esModule: false } },
           {

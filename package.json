@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "serve": "cross-env NODE_ENV=production nodemon server",
     "dev": "cross-env NODE_ENV=development nodemon server",
-    "build": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.server.js && webpack --config build/webpack.client.js",
-    "build:ssr": "cross-env NODE_ENV=production APP_RENDER=server webpack --config build/webpack.server.js",
-    "build2": "cross-env NODE_ENV=production webpack --config build/webpack.config.js"
+    "serve": "cross-env NODE_ENV=production nodemon server",
+    "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
+    "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.js",
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,6 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "file-loader": "^6.2.0",
-    "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^5.5.0",
     "koa": "^2.13.4",
     "koa-router": "^7.4.0",
@@ -53,11 +52,13 @@
     "webpack-cli": "^4.9.2",
     "webpack-dev-middleware": "^3.6.1",
     "webpack-dev-server": "^4.7.4",
-    "webpack-hot-middleware": "^2.25.1"
+    "webpack-hot-middleware": "^2.25.1",
+    "webpackbar": "^5.0.2"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.17.2",
     "axios": "^0.26.1",
+    "concurrently": "^7.0.0",
     "koa-static": "^5.0.0",
     "memory-fs": "^0.5.0",
     "vue": "^2.6.14",

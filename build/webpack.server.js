@@ -3,8 +3,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
+const WebpackBar = require('webpackbar')
 const { resolve } = require('./utils')
 
+const isProd = process.env.NODE_ENV === 'production'
 const baseConfig = require('./webpack.config.js')
 
 // server
@@ -33,5 +35,6 @@ module.exports = merge(baseConfig, {
       // filename: 'index.html',
       template: resolve('../public/index.ssr.html')
     }),
+    new WebpackBar({ name: 'server', color: 'orange', profile: isProd })
   ]
 })

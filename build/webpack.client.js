@@ -3,8 +3,10 @@ const { merge } = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
+const WebpackBar = require('webpackbar')
 const { resolve } = require('./utils')
 
+const isProd = process.env.NODE_ENV === 'production'
 const baseConfig = require('./webpack.config.js')
 
 module.exports = merge(baseConfig, {
@@ -43,7 +45,8 @@ module.exports = merge(baseConfig, {
       filename: 'index.spa.html',
       template: resolve('../public/index.spa.html')
     }),
-    new VueSSRClientPlugin()
+    new VueSSRClientPlugin(),
+    new WebpackBar({ name: 'client', color: 'green', profile: isProd })
     // new webpack.HotModuleReplacementPlugin(), // v4 [webpack-dev-server] "hot: true" automatically applies HMR plugin, you don't have to add it manually to your webpack configuration.
   ],
 })

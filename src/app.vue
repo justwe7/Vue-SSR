@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    vue app
+    vue-ssr app
     <router-link to="/">首页</router-link>
     <router-link to="/detail">详情</router-link>
     <button @click="handleClick">bar</button>
