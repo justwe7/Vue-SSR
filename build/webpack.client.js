@@ -34,11 +34,11 @@ module.exports = merge(baseConfig, {
     }
   }, */
   plugins: [
-    // new MiniCssExtractPlugin({
-    //   filename: 'css/[name]-[fullhash:8].css',
-    //   // filename: '[name].css',
-    //   // chunkFilename: '[id].css',
-    // }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name]-[fullhash:8].css',
+      // filename: '[name].css',
+      // chunkFilename: '[id].css',
+    }),
     new HtmlWebpackPlugin({
       inject: 'body',
       filename: 'index.spa.html',

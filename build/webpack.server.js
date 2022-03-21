@@ -8,6 +8,7 @@ const baseConfig = require('./webpack.config.js')
 const resolve = file => path.resolve(__dirname, file)
 
 // server
+baseConfig.module.rules[0].use[0] = 'vue-style-loader'
 
 // const config = new Config()
 module.exports = merge(baseConfig, {
@@ -18,12 +19,8 @@ module.exports = merge(baseConfig, {
     bundle: resolve('../src/entry-server.js')
   },
   output: {
-    filename: 'js/[name]-[fullhash:8].js',
     path: resolve('../dist'),
-  },
-  output: {
-    path: resolve('../dist'),
-    filename: '[name].js',
+    filename: 'server-bundle.js',
     libraryTarget: 'commonjs2' // 使用 node 模块化机制导出
   },
   plugins: [

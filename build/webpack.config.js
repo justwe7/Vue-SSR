@@ -18,8 +18,7 @@ const config = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          // MiniCssExtractPlugin.loader, // 提取css文件,不与style-loader共存
-          // isProd ?
+          // IN_SERVER ? 'vue-style-loader' :
           //   {
           //     loader: MiniCssExtractPlugin.loader,
           //     options: {
@@ -27,7 +26,17 @@ const config = {
           //         return path.relative(path.dirname(resourcePath), context) + "/";
           //       },
           //     },
-          //   } :
+          //   },
+          // MiniCssExtractPlugin.loader, // 提取css文件,不与style-loader共存
+          // isProd ?
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: (resourcePath, context) => {
+                  return path.relative(path.dirname(resourcePath), context) + "/";
+                },
+              },
+            },
           //   'style-loader', // 打包css到style标签
           { loader: 'css-loader', options: { esModule: false } },
           {
@@ -106,7 +115,7 @@ const config = {
   }
 }
 
-!IN_SERVER && config.module.rules[0].use.unshift('vue-style-loader')
+// !IN_SERVER && config.module.rules[0].use.unshift('vue-style-loader')
 // SSR 渲染报错 -> MiniCssExtractPlugin@2.6.0 https://github.com/webpack-contrib/mini-css-extract-plugin/issues/500
 // !IN_SERVER && config.module.rules[0].use.unshift({
 //   loader: MiniCssExtractPlugin.loader,
