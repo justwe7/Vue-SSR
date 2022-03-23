@@ -142,5 +142,5 @@ app
   .use(router.allowedMethods())
 
 app.listen(3000, '127.0.0.1', () => {
-  console.log('server started')
+  // console.log('server started')
 })

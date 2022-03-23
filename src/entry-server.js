@@ -1,5 +1,6 @@
 import { createApp } from './app'
 const isDev = process.env.NODE_ENV !== 'production'
+import { applyAsyncData, promisify, sanitizeComponent } from './lib/server/server-render.js'
 
 export default context => {
   // 因为有可能会是异步路由钩子函数或组件，所以我们将返回一个 Promise，
@@ -27,11 +28,44 @@ export default context => {
         return reject({ code: 404 })
       }
 
+      // 上下文中定义 asyncData 对象，供applyAsyncData方法融合data和asyncData时使用
+      context.asyncData = {}
+
       // Promise 应该 resolve 应用程序实例，以便它可以渲染
-      Promise.all(matchedComponents.map(({ asyncData }) => asyncData && asyncData({
-        store,
-        route: router.currentRoute
-      }))).then(() => {
+      Promise.all(matchedComponents.map(Component => {
+        Component = sanitizeComponent(Component) // 净化组件options
+
+        if (Component.options.asyncData && typeof Component.options.asyncData === 'function') {
+          context.asyncDataHook = true
+          /* return Component.options.asyncData({
+            store,
+            route: router.currentRoute,
+            context,
+            base: 1
+          }) */
+          /* 将组件定义的asyncData promise化 */
+          return promisify(Component.options.asyncData, {
+            store,
+            route: router.currentRoute,
+            context,
+            base: 1
+          }).then((asyncDataResult = {}) => {
+            context.asyncData[Component.cid] = asyncDataResult
+            applyAsyncData(Component)
+            // applyAsyncData(Component)
+            return asyncDataResult
+          })
+        } else {
+          return null
+        }
+        /* const { asyncData } = Component
+        return asyncData({
+          store,
+          route: router.currentRoute,
+          context,
+          base: 1
+        }) */
+      })).then(() => {
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // After all preFetch hooks are resolved, our store is now
         // filled with the state needed to render the app.
@@ -39,7 +73,7 @@ export default context => {
         // inline the state in the HTML response. This allows the client-side
         // store to pick-up the server-side state without having to duplicate
         // the initial data fetching on the client.
-        context.state = store.state
+        // context.state = store.state
         resolve(app)
       }).catch(reject)
     }, reject)
