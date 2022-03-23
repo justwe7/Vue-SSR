@@ -8,6 +8,7 @@ const isProd = process.env.NODE_ENV === 'production'
 const IN_SERVER = process.env.APP_RENDER === 'server'
 
 const config = {
+  mode: process.env.NODE_ENV,
   resolve: {
     extensions: ['.js', '.vue'],
   },

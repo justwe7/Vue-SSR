@@ -14,7 +14,7 @@ baseConfig.module.rules[0].use[0] = 'vue-style-loader'
 
 // const config = new Config()
 module.exports = merge(baseConfig, {
-  mode: 'production',
+  // mode: 'production',
   target: 'node',
   node: undefined, // mock数据 保证使用 node 中全局变量 是否要处理
   entry: {

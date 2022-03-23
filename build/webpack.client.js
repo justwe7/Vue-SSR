@@ -10,7 +10,7 @@ const isProd = process.env.NODE_ENV === 'production'
 const baseConfig = require('./webpack.config.js')
 
 module.exports = merge(baseConfig, {
-  mode: 'production',
+  // mode: process.env.NODE_ENV,
   // mode: 'development',
   // devtool: 'inline-source-map',
   entry: {
@@ -46,7 +46,7 @@ module.exports = merge(baseConfig, {
       template: resolve('../public/index.spa.html')
     }),
     new VueSSRClientPlugin(),
-    new WebpackBar({ name: 'client', color: 'green', profile: isProd })
+    new WebpackBar({ name: 'client', color: 'green', profile: isProd }),
     // new webpack.HotModuleReplacementPlugin(), // v4 [webpack-dev-server] "hot: true" automatically applies HMR plugin, you don't have to add it manually to your webpack configuration.
   ],
 })

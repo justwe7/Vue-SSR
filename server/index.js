@@ -3,6 +3,7 @@ const Router = require('koa-router')
 const { createBundleRenderer } = require('vue-server-renderer')
 const Koa = require('koa')
 const resolve = file => require('path').resolve(__dirname, file)
+
 const app = new Koa()
 const router = new Router()
 // const SSRRender = require('./ssr')
@@ -12,12 +13,13 @@ const middleware = require('./middleware')
 /* 中间件 */
 middleware(app)
 
-
 /* --- SSR --- */
 let templatePath // 渲染的html模板
 let renderer // createBundleRenderer() 创建的实例
 let readyPromise // 开发环境，等待服务启动的异步标识
 let devFs // 开发环境，虚拟内存系统
+let HTML_404 = fs.readFileSync(resolve('../public/404.html'), 'utf-8') // 404页面模板
+let HTML_ERROR = fs.readFileSync(resolve('../public/error.html'), 'utf-8') // 服务端异常模板
 
 /* 通用-用于创建 vue-server-renderer/createBundleRenderer 的实例 */
 const createRenderer = (serverBundle, options) => {
@@ -28,12 +30,12 @@ const createRenderer = (serverBundle, options) => {
   }))
 }
 
-
 /* 使用 renderer 生成页面string */
 const renderHandler = async (ctx) => {
-  return new Promise((resolveHtml, reject) => {
-    ctx.tag = `<div>SSR插入: ${ctx.request.header.host}${ctx.request.url}</div>`
-    // 使用 server-render 生成页面
+  ctx.tag = `<div>SSR插入: ${ctx.request.header.host}${ctx.request.url}</div>`
+// 使用 server-render 生成页面
+  return renderer.renderToString(ctx)
+  /* return new Promise((resolveHtml, reject) => {
     renderer.renderToString(ctx, (err, html) => {
       if (err) {
         reject(err)
@@ -41,32 +43,38 @@ const renderHandler = async (ctx) => {
       }
       resolveHtml(html)
     })
-  })
+  }) */
 }
 
 /* ssr渲染错误处理 */
 const errorHandler = async (err, ctx) => {
   // renderCSRHtml(ctx, devFs)
   const code = err.code
-  if (code === 301 || code === 302) {
-    if (err.url && err.url.startsWith('//')) {
+  switch (code) {
+    // 处理页面返回的重定向
+    case 301:
+    case 302:
+      if (!err.url) {
+        ctx.status = 404
+        ctx.type = 'html'
+        ctx.body = HTML_404
+      } else {
+        ctx.status = code || 302
+        ctx.redirect(err.url)
+      }
+      break;
+    case 404:
       ctx.status = 404
       ctx.type = 'html'
-      ctx.body = fs.readFileSync(resolve('../public/404.html'), 'utf-8')
-      return
-    }
-    ctx.redirect(err.url)
-  } else if (code === 404) {
-    ctx.status = 404
-    ctx.type = 'html'
-    ctx.body = fs.readFileSync(resolve('../public/404.html'), 'utf-8')
-  } else {
-    // 渲染异常，返回客户端spa模板
-    ctx.status = 500
-    ctx.body = 'Internal Server Error'
-    renderCSRHtml(ctx, devFs)
+      ctx.body = HTML_404
+      break;
+  
+    default:
+      // TODO 渲染异常返回客户端spa模板
+      ctx.status = code || 500
+      ctx.body = HTML_ERROR
+      break;
   }
-  return
 }
 
 /* 输出spa页面模板（区分开发/生产） */
@@ -110,6 +118,12 @@ if (isProd) {
 
 router.get('*', async (ctx, next) => {
   try {
+    /* 主动降级为SPA渲染 */
+    if (ctx._downgrade) {
+      ctx.status = 200
+      renderCSRHtml(ctx, devFs)
+      return
+    }
     if (!isProd) {
       await readyPromise
     }
