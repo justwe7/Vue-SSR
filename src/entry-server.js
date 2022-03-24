@@ -48,7 +48,7 @@ export default context => {
             store,
             route: router.currentRoute,
             context,
-            base: 1
+            myAddData: 'server-add'
           }).then((asyncDataResult = {}) => {
             context.asyncData[Component.cid] = asyncDataResult
             applyAsyncData(Component)
@@ -65,14 +65,15 @@ export default context => {
           context,
           base: 1
         }) */
-      })).then(() => {
+      })).then(asyncDataList => {
+        console.log(asyncDataList)
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // console.log(context.foo)
         // 通过renderState()注入到window中，通过window.__SSR__获取
         context.SSR_KEY = {
-          ssr: true,
+          ssr: true, // 将ssr标记为true，客户端融合判断
           state: store.state,
-          abc: 112
+          asyncDataList, // 将asyncData的结果注入到上下文中供客户端融合时获取
         }
         // After all preFetch hooks are resolved, our store is now
         // filled with the state needed to render the app.

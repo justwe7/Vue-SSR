@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    页面 detail
+    页面 detail {{bar}}
     <ul>
       <li v-for="item in itemList">{{ item }}</li>
     </ul>
@@ -10,7 +10,9 @@
 export default {
    async asyncData ({ store }) {
     await store.dispatch('fetchItem', { id: 1 })
-    return {}
+    return {
+      bar: 777
+    }
   },
   data () {
     return {}

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { applyAsyncData, promisify, sanitizeComponent, getLocation } from './lib/server/server-render.js'
+import { applyAsyncData, promisify, sanitizeComponent, getLocation, asyncComponents } from './lib/server/server-render.js'
 import { createApp } from './app'
 
 const { app, router, store } = createApp()
@@ -20,20 +20,43 @@ Vue.mixin({
 
 // 当使用 template 时，context.state 将作为 window.__INITIAL_STATE__ 状态，自动嵌入到最终的 HTML 中。而在客户端，在挂载到应用程序之前，store 就应该获取到状态：
 if (window.__SSR__) { // 通过renderState方法将__INITIAL_STATE__替换为了__SSR__
-  store.replaceState(window.__SSR__)
+  // store.replaceState(window.__SSR__)
+  const state = window.__SSR__.state
+  state && store.replaceState(state)
+  // state.route = store.state.route // hack实现，否则在replaceState时候会进行pushState操作从而丢弃掉hash值
 }
 
-router.onReady(() => {
+router.onReady(async () => {
+  /* SPA与SSR数据融合操作 */
+  if (window.__SSR__ && window.__SSR__.ssr) {
+    const path = getLocation(router.options.base, router.options.mode)
+    const Components = router.getMatchedComponents(router.match(path))
+    Components.map((c, index) => {
+      const asyncDataResult = window.__SSR__.asyncDataList && window.__SSR__.asyncDataList[index]
+      applyAsyncData(sanitizeComponent(c), asyncDataResult)
+    })
+  /* 如果是客户端渲染 */
+  } else {
+    console.warn('客户端渲染')
+    const path = getLocation(router.options.base, router.options.mode)
+    const Components = router.getMatchedComponents(router.match(path))
+    await asyncComponents({
+      Components,
+      store,
+      // urlLocation: urlLocation(),
+      route: router.currentRoute,
+      // errorHandler
+    }).then(e => {
+      console.log(e)
+    }).catch(e => {
+
+    })
+  }
+
   // 添加路由钩子函数，用于处理 asyncData.
   // 在初始路由 resolve 后执行，
   // 以便我们不会二次预取(double-fetch)已有的数据。
   // 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
-  /* const path = getLocation(router.options.base, router.options.mode)
-  const Components = router.getMatchedComponents(router.match(path))
-  Components.map((c, index) => {
-    applyAsyncData(sanitizeComponent(c), window.__SSR__.asyncDataList[index])
-  }) */
-
   router.beforeResolve((to, from, next) => {
     const matched = router.getMatchedComponents(to)
     const prevMatched = router.getMatchedComponents(from)
@@ -49,15 +72,31 @@ router.onReady(() => {
       return next()
     }
 
+    // 如果是页面参数变化，则activated匹配为空数组，该情况下移步beforeRouterUpdate钩子处理混合
+    // 客户端接管状态下asyncData混合
+    asyncComponents({
+      Components: activated,
+      store,
+      route: to,
+      myAddData: 'client-add',
+      // urlLocation: urlLocation(),
+      // errorHandler
+    }).then(() => {
+      next()
+    }).catch(e => {
+      console.error(e)
+      next(e)
+    })
+
     // 这里如果有加载指示器 (loading indicator)，就触发
-    Promise.all(activated.map(c => {
+    /* Promise.all(activated.map(c => {
       if (c.asyncData) {
         return c.asyncData({ store, route: to })
       }
     })).then(() => {
       // 停止加载指示器(loading indicator)
       next()
-    }).catch(next)
+    }).catch(next) */
   })
 
   app.$mount('#app')

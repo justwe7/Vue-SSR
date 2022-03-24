@@ -79,3 +79,30 @@ export function getLocation (base, mode) {
   }
   return (path || '/') + window.location.search + window.location.hash
 }
+
+/**
+ * 执行匹配组件中的asyncData函数，并且和组件的data函数融合
+ * @param {Object} Components 路由记录(非组件构造函数)
+ * @param {Object} store
+ * @param {Object} router
+ * @param {Function} errorHandler
+ */
+ export function asyncComponents ({ Components, store, route, errorHandler, urlLocation, ...restParams }) {
+  return Promise.all(Components.map(Component => {
+    Component = sanitizeComponent(Component)
+    if (Component.options.asyncData && typeof Component.options.asyncData === 'function') {
+      return promisify(Component.options.asyncData, {
+        store,
+        route,
+        ...restParams
+        // urlLocation,
+        // errorHandler
+      }).then((asyncDataResult = {}) => {
+        applyAsyncData(Component, asyncDataResult)
+        return asyncDataResult
+      })
+    } else {
+      return null
+    }
+  }))
+}
