@@ -8,7 +8,8 @@
 </template>
 <script type="text/ecmascript-6">
 export default {
-   async asyncData ({ store }) {
+   async asyncData ({ store, myAddData }) {
+    console.log('asyncData:', myAddData)
     await store.dispatch('fetchItem', { id: 1 })
     return {
       bar: 777

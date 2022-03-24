@@ -2,16 +2,17 @@
   <div class="home">
     页面 home
     <div>
-      {{abc}}9999
+      {{abc2}}9999
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
 export default {
   async asyncData ({ store, myAddData }) {
+    console.log(store)
     console.log('asyncData:', myAddData)
     return {
-      abc: 123
+      abc2: 77277
     }
   },
 }

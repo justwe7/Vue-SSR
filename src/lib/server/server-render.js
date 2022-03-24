@@ -106,3 +106,77 @@ export function getLocation (base, mode) {
     }
   }))
 }
+
+/**
+ * 支持热更新，重写当前父组件的$forceUpdate
+ * @param {Object} $component
+ * @param {Object} router
+ * @param {Object} store
+ * @param {Function} errorHandler
+ */
+ export function addHotReload ($component, router, store, errorHandler) {
+  // 仅重写含有asyncData函数的父组件的$forceupdate
+  if ($component.$vnode.data._hasHotReload || !$component.$parent || !$component.$options.asyncData) return
+  // $vnode = 父组件_vnode
+  $component.$vnode.data._hasHotReload = true
+  var _forceUpdate = $component.$forceUpdate.bind($component.$parent)
+  // $conpnent.$vnode.context
+  $component.$vnode.context.$forceUpdate = async () => {
+    const Components = router.getMatchedComponents(router.currentRoute)
+    Promise.all(Components.map(Component => {
+      Component = sanitizeComponent(Component)
+      if (Component.options.asyncData && typeof Component.options.asyncData === 'function') {
+        return promisify(Component.options.asyncData, {
+          store,
+          route: router.currentRoute,
+          errorHandler
+        }).then(asyncDataResult => {
+          applyAsyncData(Component, asyncDataResult)
+          return asyncDataResult
+        })
+      } else {
+        return null
+      }
+    })).then(() => {
+      _forceUpdate()
+    }).catch(() => {
+      _forceUpdate()
+    })
+  }
+}
+
+/**
+ * 热更新支持
+ * @param {Object|VueInstance}
+ * @param {Object|VueRouter}
+ * @param {Object|Vuex}
+ * @returns {undefined}
+ */
+ export function hotReloadAPI (_app, router, store, errorHandler) {
+  // only in develop support hot reload
+  if (!module || !module.hot) return
+  // 当前页面的所有vue组件
+  const $components = getChildComponents(_app, [])
+  $components.forEach(c => {
+    addHotReload.bind(_app)(c, router, store, errorHandler)
+  })
+}
+
+/**
+ * 递归获取当前vue实例下所有路由子组件实例
+ * @param {Object|VueInstance}
+ * @param {Array}
+ * @returns {Array|VueInstance}
+ */
+export function getChildComponents ($parent, $components = []) {
+  $parent.$children.forEach(($child) => {
+    if ($child.$options.__file) {
+      $components.push($child)
+    }
+    if ($child.$children && $child.$children.length) {
+      getChildComponents($child, $components)
+    }
+  })
+
+  return $components
+}

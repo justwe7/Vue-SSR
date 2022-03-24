@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import { applyAsyncData, promisify, sanitizeComponent, getLocation, asyncComponents } from './lib/server/server-render.js'
+import { applyAsyncData, hotReloadAPI, sanitizeComponent, getLocation, asyncComponents } from './lib/server/server-render.js'
 import { createApp } from './app'
+const isDev = process.env.NODE_ENV !== 'production'
 
 const { app, router, store } = createApp()
 
@@ -43,6 +44,7 @@ router.onReady(async () => {
     await asyncComponents({
       Components,
       store,
+      myAddData: 'client-add-downgrade',
       // urlLocation: urlLocation(),
       route: router.currentRoute,
       // errorHandler
@@ -100,4 +102,11 @@ router.onReady(async () => {
   })
 
   app.$mount('#app')
+
+  // 重写含有asyncData函数的父组件的$forceupdate方法，支持开发环境热更新
+  if (isDev) {
+    Vue.nextTick(() => {
+      hotReloadAPI(app, router, store)
+    })
+  }
 })
