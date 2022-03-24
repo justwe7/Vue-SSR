@@ -33,7 +33,8 @@ const createRenderer = (serverBundle, options) => {
 /* 使用 renderer 生成页面string */
 const renderHandler = async (ctx) => {
   ctx.tag = `<div>SSR插入: ${ctx.request.header.host}${ctx.request.url}</div>`
-// 使用 server-render 生成页面
+  ctx.foo = 111 // 可以将变量挂载至ctx上下文供vue相关代码获取
+  // 使用 server-render 生成页面
   return renderer.renderToString(ctx)
   /* return new Promise((resolveHtml, reject) => {
     renderer.renderToString(ctx, (err, html) => {
@@ -99,7 +100,7 @@ if (isProd) {
   renderer = createRenderer(serverBundle, {
     template,
     clientManifest,
-    // inject: false
+    inject: false // 手动资源注入(css、js..) https://ssr.vuejs.org/zh/guide/build-config.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE-client-config
   })
 /* 开发 */
 } else {
@@ -108,7 +109,7 @@ if (isProd) {
     app,
     templatePath,
     (bundle, options) => {
-      // options.inject = false
+      options.inject = false
       renderer = createRenderer(bundle, options)
     }
   )

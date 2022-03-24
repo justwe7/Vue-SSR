@@ -63,3 +63,19 @@
    }
    return promise
  }
+
+ /**
+ * 获取当前url路径
+ * @param {String} base | 基础路径
+ * @param {String} mode | 路由模式
+ */
+export function getLocation (base, mode) {
+  var path = window.location.pathname
+  if (mode === 'hash') {
+    return window.location.hash.replace(/^#\//, '')
+  }
+  if (base && path.indexOf(base) === 0) {
+    path = path.slice(base.length)
+  }
+  return (path || '/') + window.location.search + window.location.hash
+}

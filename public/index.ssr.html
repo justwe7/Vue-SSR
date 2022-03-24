@@ -5,9 +5,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SSR</title>
+  {{{ renderStyles() }}}
 </head>
 <body>
   {{{tag}}}
   <!--vue-ssr-outlet-->
-</body>
+  {{{ renderState({
+    contextKey: 'SSR_KEY',
+    windowKey: '__SSR__'
+  }) }}}
+  {{{ renderScripts() }}}
+  </body>
 </html>

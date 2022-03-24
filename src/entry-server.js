@@ -67,6 +67,13 @@ export default context => {
         }) */
       })).then(() => {
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
+        // console.log(context.foo)
+        // 通过renderState()注入到window中，通过window.__SSR__获取
+        context.SSR_KEY = {
+          ssr: true,
+          state: store.state,
+          abc: 112
+        }
         // After all preFetch hooks are resolved, our store is now
         // filled with the state needed to render the app.
         // Expose the state on the render context, and let the request handler

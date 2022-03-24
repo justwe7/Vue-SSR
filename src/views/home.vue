@@ -2,7 +2,7 @@
   <div class="home">
     页面 home
     <div>
-      {{abc}}9999
+      {abc}}9999
     </div>
   </div>
 </template>
