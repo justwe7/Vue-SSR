@@ -17,6 +17,13 @@ export default context => {
       return reject({ url: fullPath })
     }
 
+    // 缓存读取
+    if (context.siteConfig.enableCache && context.shortCache && context.longCache) {
+      const cacheKey = context.host + context.originalUrl
+      const html = context.shortCache.get(cacheKey) || context.longCache.get(cacheKey)
+      if (html) return reject({ code: 304, body: html }) // 此处并非http304
+    }
+
     // 设置服务器端 router 的位置
     router.push(context.url) // 根据url传进的 url 直接跳转至路由配置的地址
 
@@ -36,7 +43,7 @@ export default context => {
         Component = sanitizeComponent(Component) // 净化组件options
 
         if (Component.options.asyncData && typeof Component.options.asyncData === 'function') {
-          context.asyncDataHook = true
+          context.cacheAsyncDataHook = true // asyncData 标记，用于区分缓存
           /* return Component.options.asyncData({
             store,
             route: router.currentRoute,
@@ -66,7 +73,7 @@ export default context => {
           base: 1
         }) */
       })).then(asyncDataList => {
-        console.log(asyncDataList)
+        // console.log(asyncDataList)
         isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
         // console.log(context.foo)
         // 通过renderState()注入到window中，通过window.__SSR__获取

@@ -9,6 +9,9 @@ const IN_SERVER = process.env.APP_RENDER === 'server'
 
 const config = {
   mode: process.env.NODE_ENV,
+  // infrastructureLogging: {
+  //   level: 'error',
+  // },
   resolve: {
     extensions: ['.js', '.vue'],
   },

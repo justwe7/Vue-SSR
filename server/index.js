@@ -34,6 +34,10 @@ const createRenderer = (serverBundle, options) => {
 const renderHandler = async (ctx) => {
   ctx.tag = `<div>SSR插入: ${ctx.request.header.host}${ctx.request.url}</div>`
   ctx.foo = 111 // 可以将变量挂载至ctx上下文供vue相关代码获取
+  const siteConfig = {
+    enableCache: !true // 启用SSR缓存（期望将静态页缓存直接返回）
+  }
+  ctx.siteConfig = siteConfig
   // 使用 server-render 生成页面
   return renderer.renderToString(ctx)
   /* return new Promise((resolveHtml, reject) => {
@@ -64,6 +68,18 @@ const errorHandler = async (err, ctx) => {
         ctx.redirect(err.url)
       }
       break;
+    case 304:
+      ctx.status = 200 // entry-server.js 返回的http状态码304，仅用来标识用于处理LRU缓存，并非真实的缓存
+      ctx.set({
+        'ssr-cache': '1'
+      })
+      ctx.type = 'html'
+      if (err.body) {
+        ctx.body = err.body
+      } else {
+        renderCSRHtml(ctx, devFs)
+      }
+      break;
     case 404:
       ctx.status = 404
       ctx.type = 'html'
@@ -91,7 +107,7 @@ const renderCSRHtml = (ctx, devFs) => {
 }
 
 if (isProd) {
-  templatePath = resolve('.../public/index.ssr.html')
+  templatePath = resolve('../public/index.ssr.html')
   const template = fs.readFileSync(templatePath, 'utf-8')
   const serverBundle = require(resolve('../dist/vue-ssr-server-bundle.json'))
   const clientManifest = require(resolve('../dist/vue-ssr-client-manifest.json'))

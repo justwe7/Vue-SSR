@@ -23,6 +23,11 @@ export default {
       return this.$store.state.items
     }
   },
+  mounted() {
+    fetch('https://api-puce-rho.vercel.app/api/idCard?json=1').then(res => res.json()).then(data => {
+      console.log(data)
+    })
+  },
   methods: {}
 }
 </script>

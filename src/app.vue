@@ -4,7 +4,9 @@
     <router-link to="/">首页</router-link>
     <router-link to="/detail">详情</router-link>
     <button @click="handleClick">bar</button>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 <script type="text/ecmascript-6">

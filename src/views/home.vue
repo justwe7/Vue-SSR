@@ -9,7 +9,7 @@
 <script type="text/ecmascript-6">
 export default {
   async asyncData ({ store, myAddData }) {
-    console.log(store)
+    // console.log(store)
     console.log('asyncData:', myAddData)
     return {
       abc2: 77277
