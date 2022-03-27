@@ -22,7 +22,7 @@ npm run serve
 
 ### Todo
 - [x] 启用服务端渲染缓存(需区分场景
-- [ ] devServer.proxy
+- [x] devServer.proxy
 - [ ] 项目规范(eslint/stylelint/prettier/husky/commitlint..
 - [ ] webpack打包优化(公共资源、dll、多线程..
 - [ ] SSG模式支持

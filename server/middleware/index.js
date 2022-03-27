@@ -5,11 +5,13 @@ const serve = (path) => koaStatic(path, {
 })
 const ctxTag = require('./context-tag')
 const { cacheMiddleware } = require('./cache')
+const httpProxy = require('./http-proxy')
 
 module.exports = (app, router) => {
   app.use(serve(
     path.join(__dirname, '../../dist')
   ))
+  app.use(httpProxy('/api', { target: 'https://api-puce-rho.vercel.app', changeOrigin: true }))
   app.use(ctxTag())
   app.use(cacheMiddleware)
 }

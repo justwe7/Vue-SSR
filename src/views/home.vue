@@ -4,15 +4,22 @@
     <div>
       {{abc2}}9999
     </div>
+    <button @click="foo">接口请求</button>
   </div>
 </template>
 <script type="text/ecmascript-6">
+import axios from 'axios'
 export default {
   async asyncData ({ store, myAddData }) {
     // console.log(store)
     console.log('asyncData:', myAddData)
     return {
       abc2: 77277
+    }
+  },
+  methods: {
+    foo () {
+      axios.get('/api/idCard?real=1&json=1')
     }
   },
 }
