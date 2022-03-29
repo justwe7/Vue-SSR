@@ -94,9 +94,9 @@ export function getLocation (base, mode) {
       return promisify(Component.options.asyncData, {
         store,
         route,
+        urlLocation,
+        errorHandler,
         ...restParams
-        // urlLocation,
-        // errorHandler
       }).then((asyncDataResult = {}) => {
         applyAsyncData(Component, asyncDataResult)
         return asyncDataResult

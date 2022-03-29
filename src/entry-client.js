@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import { applyAsyncData, hotReloadAPI, sanitizeComponent, getLocation, asyncComponents } from './lib/server/server-render.js'
 import { createApp } from './app'
+import { applyAsyncData, hotReloadAPI, sanitizeComponent, getLocation, asyncComponents } from './lib/server/server-render.js'
+import { urlRedirect, errorHandler } from './lib/ssr-utils.js'
 const isDev = process.env.NODE_ENV !== 'production'
 
 const { app, router, store } = createApp()
@@ -11,7 +12,9 @@ Vue.mixin({
     if (asyncData) {
       asyncData({
         store: this.$store,
-        route: to
+        route: to,
+        urlRedirect: urlRedirect(),
+        errorHandler
       }).then(next).catch(next)
     } else {
       next()
@@ -45,9 +48,9 @@ router.onReady(async () => {
       Components,
       store,
       myAddData: 'client-add-downgrade',
-      // urlLocation: urlLocation(),
+      urlRedirect: urlRedirect(),
       route: router.currentRoute,
-      // errorHandler
+      errorHandler
     }).then(e => {
       console.log(e)
     }).catch(e => {
@@ -81,8 +84,8 @@ router.onReady(async () => {
       store,
       route: to,
       myAddData: 'client-add',
-      // urlLocation: urlLocation(),
-      // errorHandler
+      urlRedirect: urlRedirect(),
+      errorHandler
     }).then(() => {
       next()
     }).catch(e => {
@@ -106,7 +109,7 @@ router.onReady(async () => {
   // 重写含有asyncData函数的父组件的$forceupdate方法，支持开发环境热更新
   if (isDev) {
     Vue.nextTick(() => {
-      hotReloadAPI(app, router, store)
+      hotReloadAPI(app, router, store, errorHandler)
     })
   }
 })

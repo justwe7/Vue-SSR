@@ -28,3 +28,4 @@ npm run serve
 - [ ] SSG模式支持
 - [ ] webpack配置项同构(webpack-chain
 - [ ] keep-alive浏览器历史后退也会触发asyncData钩子执行
+- [ ] asyncData 执行报错自动触发降级渲染?

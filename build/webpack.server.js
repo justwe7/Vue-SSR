@@ -1,4 +1,5 @@
 const { merge } = require('webpack-merge')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -29,6 +30,9 @@ module.exports = merge(baseConfig, {
     // new MiniCssExtractPlugin({
     //   filename: "[name]-[fullhash:8].css",
     // }),
+    new webpack.DefinePlugin({
+      'process.env.TARGET_ENV': '"server"',
+    }),
     new VueSSRServerPlugin(),
     new HtmlWebpackPlugin({
       inject: 'body',
