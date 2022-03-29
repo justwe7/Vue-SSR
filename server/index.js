@@ -54,7 +54,7 @@ const renderHandler = async (ctx) => {
 /* ssr渲染错误处理 */
 const errorHandler = async (err, ctx) => {
   // renderCSRHtml(ctx, devFs)
-  const code = err.code
+  const code = err && err.code
   switch (code) {
     // 处理页面返回的重定向
     case 301:
@@ -88,8 +88,9 @@ const errorHandler = async (err, ctx) => {
   
     default:
       // TODO 渲染异常返回客户端spa模板
-      ctx.status = code || 500
-      ctx.body = HTML_ERROR
+      // ctx.status = code || 500
+      // ctx.body = HTML_ERROR
+      renderCSRHtml(ctx, devFs)
       break;
   }
 }

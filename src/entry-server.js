@@ -1,6 +1,7 @@
 import { createApp } from './app'
 const isDev = process.env.NODE_ENV !== 'production'
 import { applyAsyncData, promisify, sanitizeComponent } from './lib/server/server-render.js'
+import { urlRedirect, errorHandler } from './lib/ssr-utils.js'
 
 export default context => {
   // 因为有可能会是异步路由钩子函数或组件，所以我们将返回一个 Promise，
@@ -55,6 +56,8 @@ export default context => {
             store,
             route: router.currentRoute,
             context,
+            urlRedirect: urlRedirect(context),
+            errorHandler,
             myAddData: 'server-add'
           }).then((asyncDataResult = {}) => {
             context.asyncData[Component.cid] = asyncDataResult

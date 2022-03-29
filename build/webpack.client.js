@@ -35,6 +35,9 @@ module.exports = merge(baseConfig, {
     }
   }, */
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.TARGET_ENV': '"client"',
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name]-[fullhash:8].css',
       // filename: '[name].css',
