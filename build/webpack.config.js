@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
 
 const isProd = process.env.NODE_ENV === 'production'
 const IN_SERVER = process.env.APP_RENDER === 'server'
@@ -95,6 +96,11 @@ const config = {
   },
   plugins: [
     new VueLoaderPlugin(),
+    new ESLintPlugin({
+      emitWarning: true,
+      extensions: ['js', 'vue'],
+      fix: true
+    }),
     // new CleanWebpackPlugin(),
     // new FriendlyErrorsWebpackPlugin({
     //   // compilationSuccessInfo: {
