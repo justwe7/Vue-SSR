@@ -17,7 +17,7 @@ import router from './router'
 //   console.log(9527)
 // })
 
-const app = new Vue({
+window.$vvm = new Vue({
   el: '#app',
   router,
   render: h => h(App)
