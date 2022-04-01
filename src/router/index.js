@@ -1,6 +1,7 @@
 // router.js
 import Vue from 'vue'
 import Router from 'vue-router'
+
 Vue.use(Router)
 
 // import Home from '../views/home.vue';
@@ -22,8 +23,16 @@ export function createRouter () {
     routes: [
       // { path: '/', component: Home },
       // { path: '/detail', component: Detail }
-      { path: '/', component: () => import(/* webpackChunkName: "home" */ '../views/home.vue') },
-      { path: '/detail', component: () => import(/* webpackChunkName: "detail" */ '../views/detail.vue') }
+      {
+        path: '/',
+        component: () =>
+          import(/* webpackChunkName: "home" */ '../views/home.vue')
+      },
+      {
+        path: '/detail',
+        component: () =>
+          import(/* webpackChunkName: "detail" */ '../views/detail.vue')
+      }
     ]
   })
 }

@@ -1,14 +1,14 @@
 <template>
   <div class="detail">
-    页面 detail {{bar}}
+    页面 detail {{ bar }}
     <ul>
-      <li v-for="item in itemList">{{ item }}</li>
+      <li v-for="(item, index) in itemList" :key="index">{{ item }}</li>
     </ul>
   </div>
 </template>
 <script type="text/ecmascript-6">
 export default {
-   async asyncData ({ store, myAddData }) {
+  async asyncData ({ store, myAddData }) {
     console.log('asyncData:', myAddData)
     await store.dispatch('fetchItem', { id: 1 })
     return {
@@ -23,8 +23,8 @@ export default {
       return this.$store.state.items
     }
   },
-  mounted() {
-    fetch('https://api-puce-rho.vercel.app/api/idCard?json=1').then(res => res.json()).then(data => {
+  mounted () {
+    fetch('https://api-puce-rho.vercel.app/api/idCard?json=1').then(res => res.json()).then((data) => {
       console.log(data)
     })
   },
