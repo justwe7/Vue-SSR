@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    vue-ssr app
-    <router-link to="/">首页</router-link>
-    <router-link to="/detail">详情</router-link>
-    <button @click="handleClick">bar</button>
+    <router-link to="/home">首页</router-link>
+    <router-link to="/list">列表</router-link>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>

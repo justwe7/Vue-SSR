@@ -22,7 +22,9 @@ export function createRouter () {
     routes: [
       // { path: '/', component: Home },
       // { path: '/detail', component: Detail }
-      { path: '/', component: () => import(/* webpackChunkName: "home" */ '../views/home.vue') },
+      { path: '/', redirect: '/home' },
+      { path: '/home', component: () => import(/* webpackChunkName: "home" */ '../views/home.vue') },
+      { path: '/list', component: () => import(/* webpackChunkName: "list" */ '../views/list.vue') },
       { path: '/detail', component: () => import(/* webpackChunkName: "detail" */ '../views/detail.vue') }
     ]
   })

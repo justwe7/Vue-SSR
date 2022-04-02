@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     foo () {
-      axios.get('/api/idCard?real=1&json=1')
+      axios.get('/api/mp-data')
     }
   },
 }
