@@ -1,14 +1,13 @@
 <template>
   <div class="home">
     页面 home
-    <div>
-      {{abc2}}9999
-    </div>
+    <div>{{ abc2 }}9999</div>
     <button @click="foo">接口请求</button>
   </div>
 </template>
 <script type="text/ecmascript-6">
 import axios from 'axios'
+
 export default {
   async asyncData ({ store, myAddData, errorHandler, urlRedirect }) {
     // console.log(store)
@@ -24,11 +23,13 @@ export default {
       abc2: 77277
     }
   },
+  mounted () {
+  },
   methods: {
     foo () {
       axios.get('/api/mp-data')
     }
-  },
+  }
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">

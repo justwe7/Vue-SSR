@@ -18,15 +18,15 @@ let templatePath // 渲染的html模板
 let renderer // createBundleRenderer() 创建的实例
 let readyPromise // 开发环境，等待服务启动的异步标识
 let devFs // 开发环境，虚拟内存系统
-let HTML_404 = fs.readFileSync(resolve('../public/404.html'), 'utf-8') // 404页面模板
-let HTML_ERROR = fs.readFileSync(resolve('../public/error.html'), 'utf-8') // 服务端异常模板
+const HTML_404 = fs.readFileSync(resolve('../public/404.html'), 'utf-8') // 404页面模板
+// const HTML_ERROR = fs.readFileSync(resolve('../public/error.html'), 'utf-8') // 服务端异常模板
 
 /* 通用-用于创建 vue-server-renderer/createBundleRenderer 的实例 */
 const createRenderer = (serverBundle, options) => {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
   return createBundleRenderer(serverBundle, Object.assign(options, {
     basedir: resolve('../dist'),
-    runInNewContext: false,
+    runInNewContext: false
   }))
 }
 
@@ -67,7 +67,7 @@ const errorHandler = async (err, ctx) => {
         ctx.status = code || 302
         ctx.redirect(err.url)
       }
-      break;
+      break
     case 304:
       ctx.status = 200 // entry-server.js 返回的http状态码304，仅用来标识用于处理LRU缓存，并非真实的缓存
       ctx.set({
@@ -79,19 +79,18 @@ const errorHandler = async (err, ctx) => {
       } else {
         renderCSRHtml(ctx, devFs)
       }
-      break;
+      break
     case 404:
       ctx.status = 404
       ctx.type = 'html'
       ctx.body = HTML_404
-      break;
-  
+      break
     default:
       // TODO 渲染异常返回客户端spa模板
       // ctx.status = code || 500
       // ctx.body = HTML_ERROR
       renderCSRHtml(ctx, devFs)
-      break;
+      break
   }
 }
 

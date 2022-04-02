@@ -5,6 +5,7 @@ const FriendlyErrorsPlugin = require('@soda/friendly-errors-webpack-plugin')
 const notifier = require('node-notifier')
 const TerserPlugin = require('terser-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
 
 const isProd = process.env.NODE_ENV === 'production'
 const IN_SERVER = process.env.APP_RENDER === 'server'
@@ -97,6 +98,11 @@ const config = {
   },
   plugins: [
     new VueLoaderPlugin(),
+    new ESLintPlugin({
+      emitWarning: true,
+      extensions: ['js', 'vue'],
+      fix: true
+    }),
     // new CleanWebpackPlugin(),
     new FriendlyErrorsPlugin({
       onErrors: (severity, errors) => {

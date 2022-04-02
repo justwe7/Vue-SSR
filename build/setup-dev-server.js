@@ -51,6 +51,7 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   const devMiddleware = webpackDevMiddleware(clientCompiler, {
     publicPath: clientConfig.output.publicPath,
     logLevel: 'silent',
+    overlay: true,
     stats: {
       colors: true,
       assets: false,
