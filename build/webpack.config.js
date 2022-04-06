@@ -6,6 +6,7 @@ const notifier = require('node-notifier')
 const TerserPlugin = require('terser-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 const IN_SERVER = process.env.APP_RENDER === 'server'
@@ -101,26 +102,30 @@ const config = {
     new ESLintPlugin({
       emitWarning: true,
       extensions: ['js', 'vue'],
+      failOnError: false,
+      // formatter: require('eslint-friendly-formatter'),
+      // eslint-friendly-formatter
       fix: true
     }),
     // new CleanWebpackPlugin(),
-    new FriendlyErrorsPlugin({
-      onErrors: (severity, errors) => {
-        if (severity !== 'error') {
-          return;
-        }
-        const error = errors[0];
-        notifier.notify({
-          title: 'webpackError - ' + error.name,
-          message: error.file,
-          // message: error.message
-        });
-      }
-      // compilationSuccessInfo: {
-      //   messages: ['You application is running here http://localhost:3000'],
-      //   notes: ['Some additional notes to be displayed upon successful compilation']
-      // },
-    }), // 输出美化
+    // new ErrorOverlayPlugin(),
+    // new FriendlyErrorsPlugin({
+    //   onErrors: (severity, errors) => {
+    //     if (severity !== 'error') {
+    //       return;
+    //     }
+    //     const error = errors[0];
+    //     notifier.notify({
+    //       title: 'webpackError - ' + error.name,
+    //       message: error.file,
+    //       // message: error.message
+    //     });
+    //   }
+    //   // compilationSuccessInfo: {
+    //   //   messages: ['You application is running here http://localhost:3000'],
+    //   //   notes: ['Some additional notes to be displayed upon successful compilation']
+    //   // },
+    // }), // 输出美化
   ],
   optimization: {
     minimize: true,

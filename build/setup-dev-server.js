@@ -8,6 +8,7 @@ const webpackDevMiddleware = require('./koa-webpack-dev-middleware')
 const webpackHotMiddleware = require('./koa-webpack-hot-middleware')
 const serverConfig = require('./webpack.server')
 const clientConfig = require('./webpack.client')
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 module.exports = function setupDevServer (app, templatePath, cb) {
   let bundle
@@ -50,8 +51,8 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   const clientCompiler = Webpack(clientConfig)
   const devMiddleware = webpackDevMiddleware(clientCompiler, {
     publicPath: clientConfig.output.publicPath,
-    logLevel: 'silent',
-    overlay: true,
+    // logLevel: 'silent',
+    // overlay: true,
     stats: {
       colors: true,
       assets: false,
@@ -62,7 +63,11 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   app.use(devMiddleware)
   clientCompiler.hooks.done.tap('done', stats => {
     stats = stats.toJson()
-    if (stats.errors.length) return
+    if (stats.errors.length) {
+      // stats.errors.forEach(err => console.error(err))
+      // stats.warnings.forEach(err => console.warn(err))
+      return
+    }
 
     clientManifest = JSON.parse(readFile(
       devMiddleware.fileSystem,
@@ -73,7 +78,7 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   })
 
   // hot middleware
-  app.use(webpackHotMiddleware(clientCompiler, { heartbeat: 5000, log: false }))
+  app.use(webpackHotMiddleware(clientCompiler, { heartbeat: 5000/* , log: false */ }))
 
   // watch and update server renderer
   const serverCompiler = Webpack(serverConfig)

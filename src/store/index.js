@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export function createStore () {
   return new Vuex.Store({
     state: {
-      vuexDataTimestamp : +new Date(),
+      vuexDataTimestamp: +new Date(),
       items: {}
     },
     actions: {
