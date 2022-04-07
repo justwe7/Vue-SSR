@@ -4,14 +4,15 @@
   "description": "",
   "scripts": {
     "dev2": "cross-env NODE_ENV=development node server",
-    "dev": "cross-env NODE_ENV=development nodemon server",
+    "start": "cross-env NODE_ENV=development nodemon server",
     "serve": "cross-env NODE_ENV=production nodemon server",
     "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.js",
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js",
     "lint": "eslint --ext .js,.vue src",
     "lint:fix": "eslint --ext .js,.vue src server --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "gcm": "cz"
   },
   "repository": {
     "type": "git",
@@ -35,8 +36,10 @@
     "babel-loader": "^8.2.3",
     "chokidar": "^3.5.3",
     "clean-webpack-plugin": "^4.0.0",
+    "commitizen": "^4.2.4",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
+    "cz-conventional-changelog": "^3.3.0",
     "error-overlay-webpack-plugin": "^1.1.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
@@ -88,5 +91,10 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
