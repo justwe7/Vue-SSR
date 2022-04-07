@@ -26,6 +26,7 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 .home {
   color: goldenrod;
+
   dl {
     margin-bottom: 10px;
     background-color: #fafafa;

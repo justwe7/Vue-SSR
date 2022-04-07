@@ -6,6 +6,7 @@ const notifier = require('node-notifier')
 const TerserPlugin = require('terser-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
+const StylelintPlugin = require('stylelint-webpack-plugin')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -106,6 +107,10 @@ const config = {
       // formatter: require('eslint-friendly-formatter'),
       // eslint-friendly-formatter
       fix: true
+    }),
+    new StylelintPlugin({
+      failOnError: false,
+      extensions: ['scss', 'vue', 'css']
     }),
     // new CleanWebpackPlugin(),
     // new ErrorOverlayPlugin(),
