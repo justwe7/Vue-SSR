@@ -9,7 +9,9 @@
     "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.js",
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js",
-    "lint:fix": "eslint --ext .js,.vue src server --fix"
+    "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --ext .js,.vue src server --fix",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -47,6 +49,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "http-proxy-middleware": "^2.0.4",
+    "husky": "^7.0.4",
     "koa": "^2.13.4",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
