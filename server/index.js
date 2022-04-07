@@ -148,7 +148,7 @@ router.get('*', async (ctx, next) => {
     ctx.type = 'html'
     ctx.body = html
   } catch (err) {
-    console.log('render-error:', err)
+    // console.log('render-error:', err)
     errorHandler(err, ctx)
   }
 })

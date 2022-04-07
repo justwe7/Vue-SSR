@@ -51,7 +51,11 @@ module.exports = merge(baseConfig, {
     }),
     new ErrorOverlayPlugin(),
     new VueSSRClientPlugin(),
-    new WebpackBar({ name: 'client', color: 'green', profile: isProd }),
+    new WebpackBar({ name: 'client', color: 'green', profile: isProd, reporter: {
+      // done(context) {
+      //   console.log(context)
+      // },
+    } }),
     // new webpack.HotModuleReplacementPlugin(), // v4 [webpack-dev-server] "hot: true" automatically applies HMR plugin, you don't have to add it manually to your webpack configuration.
   ],
 })

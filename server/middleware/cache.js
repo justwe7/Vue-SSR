@@ -5,12 +5,12 @@ const LRU = require('lru-cache')
 
 const longCache = new LRU({
   max: 400,
-  maxAge: 24 * 3600 * 1000 // 1 day 后过期
+  ttl: 24 * 3600 * 1000 // 1 day 后过期
 })
 
 const shortCache = new LRU({
   max: 400,
-  maxAge: 1 * 60 * 1000 // 1min 后过期
+  ttl: 1 * 60 * 1000 // 1min 后过期
 })
 
 const cacheMiddleware = async function (ctx, next) {

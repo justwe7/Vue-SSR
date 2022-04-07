@@ -29,3 +29,4 @@ npm run serve
 - [ ] webpack配置项同构(webpack-chain
 - [ ] keep-alive浏览器历史后退也会触发asyncData钩子执行
 - [ ] asyncData 执行报错自动触发降级渲染?
+- [ ] 浏览器控制台及遮罩未展示eslint错误。经排查，因webpack-hot-middleware未完美支持webpack5，待后续...
