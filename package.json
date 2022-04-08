@@ -9,7 +9,11 @@
     "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.js",
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js",
-    "lint:fix": "eslint --ext .js,.vue src server --fix"
+    "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --ext .js,.vue src server --fix",
+    "lint:css": "stylelint \"src/**/*.(vue|scss|css)\" --fix",
+    "prepare": "husky install",
+    "gcm": "cz"
   },
   "repository": {
     "type": "git",
@@ -33,8 +37,10 @@
     "babel-loader": "^8.2.3",
     "chokidar": "^3.5.3",
     "clean-webpack-plugin": "^4.0.0",
+    "commitizen": "^4.2.4",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
+    "cz-conventional-changelog": "^3.3.0",
     "error-overlay-webpack-plugin": "^1.1.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
@@ -47,6 +53,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "http-proxy-middleware": "^2.0.4",
+    "husky": "^7.0.4",
     "koa": "^2.13.4",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
@@ -58,6 +65,10 @@
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-config-standard-scss": "^3.0.0",
+    "stylelint-webpack-plugin": "^3.2.0",
     "url-loader": "^4.1.1",
     "vue-loader": "^15.9.8",
     "vue-router": "^3.5.3",
@@ -85,5 +96,10 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
