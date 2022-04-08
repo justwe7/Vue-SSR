@@ -109,7 +109,8 @@ const config = {
       fix: true
     }),
     new StylelintPlugin({
-      failOnError: false,
+      fix: true,
+      // failOnError: false,
       extensions: ['scss', 'vue', 'css']
     }),
     // new CleanWebpackPlugin(),
