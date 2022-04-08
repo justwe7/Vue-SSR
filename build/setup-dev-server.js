@@ -8,7 +8,7 @@ const webpackDevMiddleware = require('./koa-webpack-dev-middleware')
 const webpackHotMiddleware = require('./koa-webpack-hot-middleware')
 const serverConfig = require('./webpack.server')
 const clientConfig = require('./webpack.client')
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 module.exports = function setupDevServer (app, templatePath, cb) {
   let bundle
@@ -44,33 +44,34 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   clientConfig.output.filename = '[name].js'
   clientConfig.plugins.push(
     new Webpack.HotModuleReplacementPlugin(),
-    new Webpack.NoEmitOnErrorsPlugin()
+    new Webpack.NoEmitOnErrorsPlugin(),
+    // new ErrorOverlayPlugin()
   )
 
   // dev middleware
   const clientCompiler = Webpack(clientConfig)
   const devMiddleware = webpackDevMiddleware(clientCompiler, {
     publicPath: clientConfig.output.publicPath,
-    logLevel: 'silent',
+    // logLevel: 'silent',
     // noInfo: true,
     // clientLogLevel: 'silent',
-    // stats: 'errors-only'
-    stats: {
-      colors: true,
-      hash: false,
-      version: false,
-      timings: false,
-      assets: false,
-      chunks: false,
-      modules: false,
-      reasons: false,
-      children: false,
-      source: false,
-      errors: false,
-      errorDetails: false,
-      warnings: false,
-      publicPath: false
-    }
+    stats: 'errors-only'
+    // stats: {
+    //   colors: true,
+    //   hash: false,
+    //   version: false,
+    //   timings: false,
+    //   assets: false,
+    //   chunks: false,
+    //   modules: false,
+    //   reasons: false,
+    //   children: false,
+    //   source: false,
+    //   errors: true,
+    //   errorDetails: true,
+    //   warnings: true,
+    //   publicPath: false
+    // }
   })
   app.use(devMiddleware)
   clientCompiler.hooks.done.tap('done', stats => {
