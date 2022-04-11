@@ -98,7 +98,7 @@ const config = {
 
               // 池的名称
               // 可以修改名称来创建其余选项都一样的池
-              name: 'my-pool'
+              name: 'ssr-pool'
             },
           },
           {
@@ -205,14 +205,14 @@ const config = {
 //   },
 // })
 if (isProd) {
-  config.cache = {
-    type: 'filesystem',
-    // cacheDirectory: resolve('.temp_cache'),
-    // buildDependencies: {
-    //   // This makes all dependencies of this file - build dependencies
-    //   config: [__filename],
-    // },
-  }
+  // config.cache = {
+  //   type: 'filesystem',
+  //   // cacheDirectory: resolve('.temp_cache'),
+  //   // buildDependencies: {
+  //   //   // This makes all dependencies of this file - build dependencies
+  //   //   config: [__filename],
+  //   // },
+  // }
   config.devtool = 'nosources-source-map'
   config.optimization = {
     minimize: true,

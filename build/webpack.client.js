@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const WebpackBar = require('webpackbar')
@@ -9,6 +10,29 @@ const { resolve } = require('./utils')
 
 const isProd = process.env.NODE_ENV === 'production'
 const baseConfig = require('./webpack.config.js')
+
+/* client-render编译缓存 */
+baseConfig.cache = {
+  name: 'clientCache-' + process.env.NODE_ENV,
+  type: 'filesystem',
+  // cacheDirectory: resolve('.temp_cache'),
+  // buildDependencies: {
+  //   // This makes all dependencies of this file - build dependencies
+  //   config: [__filename],
+  // },
+}
+if (isProd) {
+  baseConfig.optimization.minimizer.push(new CssMinimizerPlugin({
+    parallel: true,
+  }))
+}
+/* optimization: {
+  minimizer: [
+    // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
+    // `...`,
+    new CssMinimizerPlugin(),
+  ],
+}, */
 
 module.exports = merge(baseConfig, {
   // mode: process.env.NODE_ENV,

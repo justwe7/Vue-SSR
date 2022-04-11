@@ -14,6 +14,17 @@ const baseConfig = require('./webpack.config.js')
 // server
 baseConfig.module.rules[0].use[0] = 'vue-style-loader'
 
+/* server-render编译缓存 */
+baseConfig.cache = {
+  name: 'serverCache-' + process.env.NODE_ENV,
+  type: 'filesystem',
+  // cacheDirectory: resolve('.temp_cache'),
+  // buildDependencies: {
+  //   // This makes all dependencies of this file - build dependencies
+  //   config: [__filename],
+  // },
+}
+
 // const config = new Config()
 module.exports = merge(baseConfig, {
   // mode: 'production',
