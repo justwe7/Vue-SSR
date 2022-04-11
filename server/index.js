@@ -33,7 +33,7 @@ const createRenderer = (serverBundle, options) => {
 /* 使用 renderer 生成页面string */
 const renderHandler = async (ctx) => {
   ctx.tag = `<div>SSR插入: ${ctx.request.header.host}${ctx.request.url}</div>`
-  ctx.foo = 111 // 可以将变量挂载至ctx上下文供vue相关代码获取
+  // ctx.foo = 111 // 可以将变量挂载至ctx上下文供vue相关代码获取
   const siteConfig = {
     enableCache: !true // 启用SSR缓存（期望将静态页缓存直接返回）
   }
@@ -148,7 +148,7 @@ router.get('*', async (ctx, next) => {
     ctx.type = 'html'
     ctx.body = html
   } catch (err) {
-    // console.log('render-error:', err)
+    console.log('render-error:', err)
     errorHandler(err, ctx)
   }
 })

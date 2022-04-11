@@ -26,12 +26,11 @@ export default {
     }
   },
   mounted () {
-    // const a = 1
-    // console.log(a)
     // require('./xxx')
   },
   methods: {
     foo () {
+      console.log(9999)
       axios.get('/api/mp-data')
     }
   }
@@ -39,8 +38,10 @@ export default {
 </script>
 <style lang="scss" rel="stylesheet/scss">
 .home {
+  opacity: 1;
   height: 300px;
   color: #f00;
-  background-color: yellowgreen;
+
+  // background-color: yellowgreen;
 }
 </style>

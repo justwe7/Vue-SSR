@@ -134,17 +134,17 @@ const config = {
     // }), // 输出美化
   ],
   optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        extractComments: false,
-        terserOptions: {
-          format: {
-            comments: false
-          }
-        }
-      })
-    ]
+    // minimize: true,
+    // minimizer: [
+    //   new TerserPlugin({
+    //     extractComments: false,
+    //     terserOptions: {
+    //       format: {
+    //         comments: false
+    //       }
+    //     }
+    //   })
+    // ]
   }
 }
 
@@ -158,5 +158,23 @@ const config = {
 //     // },
 //   },
 // })
+if (isProd) {
+  config.devtool = 'nosources-source-map'
+  config.optimization = {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false
+          }
+        }
+      })
+    ]
+  }
+} else {
+  config.devtool = 'eval-cheap-module-source-map'
+}
 
 module.exports = config

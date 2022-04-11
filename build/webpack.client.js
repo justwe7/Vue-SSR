@@ -12,8 +12,6 @@ const baseConfig = require('./webpack.config.js')
 
 module.exports = merge(baseConfig, {
   // mode: process.env.NODE_ENV,
-  // mode: 'development',
-  // devtool: 'inline-source-map',
   entry: {
     bundle: resolve('../src/entry-client.js'),
   },

@@ -1,11 +1,11 @@
 module.exports = {
-  "extends": [
-    "stylelint-config-standard-scss",
-    "stylelint-config-recommended-vue/scss",
-    "stylelint-config-standard"
+  extends: [
+    'stylelint-config-standard-scss',
+    'stylelint-config-recommended-vue/scss',
+    'stylelint-config-standard',
   ],
-  "plugins": ["stylelint-order"],
-  "rules": {
+  plugins: ['stylelint-order'],
+  rules: {
     'order/order': [
       [
         'dollar-variables',
@@ -26,6 +26,15 @@ module.exports = {
     ],
     'order/properties-order': [
       [
+        // 影响元素展示且一般与设计稿样式无关联
+        'opacity',
+        'visibility',
+        'box-sizing',
+        'overflow',
+        'overflow-x',
+        'overflow-y',
+        'overflow-scrolling',
+
         'content',
         'position',
         'top',
@@ -73,14 +82,9 @@ module.exports = {
         'float',
         'clear',
         'object-fit',
-        'overflow',
-        'overflow-x',
-        'overflow-y',
-        'overflow-scrolling',
         'clip',
 
         //
-        'box-sizing',
         'width',
         'min-width',
         'max-width',
@@ -141,6 +145,7 @@ module.exports = {
         'border-bottom-left-image',
 
         //
+        'color',
         'background',
         'background-color',
         'background-image',
@@ -152,7 +157,6 @@ module.exports = {
         'background-origin',
         'background-size',
         'background-repeat',
-        'color',
         'box-decoration-break',
         'box-shadow',
         'outline',
@@ -210,8 +214,6 @@ module.exports = {
         'interpolation-mode',
 
         //
-        'opacity',
-        'visibility',
         'filter',
         'resize',
         'cursor',

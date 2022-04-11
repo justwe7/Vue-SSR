@@ -12,7 +12,8 @@
 import axios from 'axios'
 export default {
   async asyncData ({ store, myAddData, errorHandler, urlRedirect }) {
-    const { data: list } = await axios.get('/api/mp-data')
+    // const { data: list } = await axios.get('/api/mp-data')
+    const { data: list } = await axios.get('https://api-puce-rho.vercel.app/api/mp-data')
     return {
       list
     }
