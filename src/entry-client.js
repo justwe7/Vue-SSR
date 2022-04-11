@@ -6,8 +6,8 @@ import {
   sanitizeComponent,
   getLocation,
   asyncComponents
-} from './lib/server/server-render.js'
-import { urlRedirect, errorHandler } from './lib/ssr-utils.js'
+} from '@/lib/server/server-render.js'
+import { urlRedirect, errorHandler } from '@/lib/ssr-utils.js'
 
 const isDev = process.env.NODE_ENV !== 'production'
 

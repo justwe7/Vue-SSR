@@ -5,6 +5,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 const WebpackBar = require('webpackbar')
+const nodeExternals = require('webpack-node-externals')
 const { resolve } = require('./utils')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -18,6 +19,8 @@ module.exports = merge(baseConfig, {
   // mode: 'production',
   target: 'node',
   node: undefined, // mock数据 保证使用 node 中全局变量 是否要处理
+  externalsPresets: { node: true }, // in order to ignore built-in modules like path, fs, etc.
+  externals: [nodeExternals()], // 外部化依赖
   entry: {
     bundle: resolve('../src/entry-server.js')
   },

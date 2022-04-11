@@ -1,6 +1,6 @@
 import { createApp } from './app'
-import { applyAsyncData, promisify, sanitizeComponent } from './lib/server/server-render.js'
-import { urlRedirect, errorHandler } from './lib/ssr-utils.js'
+import { applyAsyncData, promisify, sanitizeComponent } from '@/lib/server/server-render.js'
+import { urlRedirect, errorHandler } from '@/lib/ssr-utils.js'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
