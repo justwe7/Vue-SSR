@@ -9,6 +9,6 @@ utils.readFile = (fs, file, pwd) => {
   }
 }
 
-utils.resolve = file => path.resolve(__dirname, file)
+utils.resolve = (...file) => path.resolve(__dirname, ...file)
 
 module.exports = utils

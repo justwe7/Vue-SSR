@@ -33,7 +33,7 @@ module.exports = merge(baseConfig, {
   externalsPresets: { node: true }, // in order to ignore built-in modules like path, fs, etc.
   externals: [nodeExternals()], // 外部化依赖
   entry: {
-    bundle: resolve('../src/entry-server.js')
+    app: resolve('../src/entry-server.js')
   },
   output: {
     path: resolve('../dist'),

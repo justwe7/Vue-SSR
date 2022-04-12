@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FriendlyErrorsPlugin = require('@soda/friendly-errors-webpack-plugin')
@@ -8,6 +9,8 @@ const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
 const StylelintPlugin = require('stylelint-webpack-plugin')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 
 const { resolve } = require('./utils')
 
@@ -24,6 +27,7 @@ const config = {
       '@': resolve('../src')
     },
     extensions: ['.js', '.vue'],
+    symlinks: false, // 项目不使用 symlinks（例如 npm link ）减少解析工作量
   },
   module: {
     rules: [
@@ -159,6 +163,8 @@ const config = {
       // failOnError: false,
       extensions: ['scss', 'vue', 'css']
     }),
+    // new BundleAnalyzerPlugin()
+
     // new CleanWebpackPlugin(),
     // new ErrorOverlayPlugin(),
     // new FriendlyErrorsPlugin({
@@ -205,6 +211,21 @@ const config = {
 //   },
 // })
 if (isProd) {
+  /* dll - 体验下来没有webpack5自带的cache优秀 */
+  /* config.plugins.push(
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: resolve('../public/dll/common_lib.dll.manifest.json'),
+    })
+  ),
+  config.plugins.push(
+    new AddAssetHtmlPlugin({
+      outputPath: 'dll',
+      publicPath: '/dll',
+      filepath: resolve('../public/dll/common_lib.dll.js'),
+    })
+  ) */
+
   // config.cache = {
   //   type: 'filesystem',
   //   // cacheDirectory: resolve('.temp_cache'),

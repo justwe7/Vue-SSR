@@ -25,6 +25,33 @@ if (isProd) {
   baseConfig.optimization.minimizer.push(new CssMinimizerPlugin({
     parallel: true,
   }))
+  baseConfig.optimization.splitChunks = {
+    // include all types of chunks
+    chunks: 'all',
+    automaticNameDelimiter: '-',
+    minSize: 20000, // 拆分出的模块最小体积(≈ 20kb)，太小体积的代码块被分割，可能还会因为额外的请求，拖慢加载性能
+    minChunks: 1, // 最少引用一次
+    maxAsyncRequests: 5, // 同一个页同时最大按需请求的模块数量不超过5个
+    maxInitialRequests: 6, // 入口同时请求同步模块数量
+    cacheGroups: {
+      default: false,
+      /* 创建一个 commons chunk，其中包括入口（entry points）之间所有共享的代码 */
+      // commons: {
+      //   name: 'commons',
+      //   chunks: 'initial',
+      //   minChunks: 2,
+      // },
+      /* 创建一个 vendors chunk，其中包括整个应用程序中 node_modules 的所有代码 */
+      vendors: {
+        // node_modules里的代码
+        name: 'vendors',
+        test: /[\\/]node_modules[\\/]/,
+        chunks: 'all', // async 异步引入的库进行分离(默认) initial 同步引入的库进行分离 all 所有引入的库进行分离(推荐)
+        priority: -1, // 优先级
+        enforce: true // 创建chunk优先级高于：splitChunks.minSize、splitChunks.minChunks、splitChunks.maxAsyncRequests 和 splitChunks.maxInitialRequests
+      }
+    }
+  }
 }
 /* optimization: {
   minimizer: [
@@ -37,7 +64,7 @@ if (isProd) {
 module.exports = merge(baseConfig, {
   // mode: process.env.NODE_ENV,
   entry: {
-    bundle: resolve('../src/entry-client.js'),
+    app: resolve('../src/entry-client.js'),
   },
   output: {
     publicPath: '/',

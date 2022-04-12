@@ -37,9 +37,9 @@ module.exports = function setupDevServer (app, templatePath, cb) {
 
   // modify client config to work with hot middleware 客户端注入热更新模块
   // https://github.com/webpack-contrib/webpack-hot-middleware/tree/master/example
-  clientConfig.entry.bundle = [
+  clientConfig.entry.app = [
     'webpack-hot-middleware/client',
-    clientConfig.entry.bundle
+    clientConfig.entry.app
   ]
   clientConfig.output.filename = '[name].js'
   clientConfig.plugins.push(
