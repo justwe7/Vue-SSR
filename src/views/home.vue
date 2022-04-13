@@ -12,6 +12,7 @@ import axios from 'axios'
 
 export default {
   async asyncData ({ store, myAddData, errorHandler, urlRedirect }) {
+    console.log(store.state)
     // console.log(store)
     // throw { code : 500 }
     // urlRedirect('/detail')

@@ -10,7 +10,7 @@ export default (context) => {
   // 就已经准备就绪。
   return new Promise((resolve, reject) => {
     const s = isDev && Date.now()
-    const { app, router, store } = createApp()
+    const { app, router, store } = createApp(context)
 
     const { url } = context
     const { fullPath } = router.resolve(url).route
