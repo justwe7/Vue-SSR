@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const WebpackBar = require('webpackbar')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
 const { resolve } = require('./utils')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -35,6 +36,12 @@ if (isProd) {
     maxInitialRequests: 6, // 入口同时请求同步模块数量
     cacheGroups: {
       default: false,
+      wandUi: {
+        name: "chunk-wandUi", // 单独将 wandUI 拆包
+        priority: 20, // 权重要大于 libs 和 app 不然会被打包进 vendors
+        test: /[\\/]node_modules[\\/]wand-ui[\\/]/,
+        reuseExistingChunk: true
+      },
       /* 创建一个 commons chunk，其中包括入口（entry points）之间所有共享的代码 */
       // commons: {
       //   name: 'commons',
@@ -85,6 +92,12 @@ module.exports = merge(baseConfig, {
     }
   }, */
   plugins: [
+    /* new PrerenderSPAPlugin({
+      // Required - The path to the webpack-outputted app to prerender.
+      staticDir: resolve('../dist'),
+      // Required - Routes to render.
+      routes: ['/home'],
+    }), */
     new webpack.DefinePlugin({
       'process.env.TARGET_ENV': '"client"',
     }),

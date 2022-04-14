@@ -67,6 +67,7 @@
     "nodemon": "^2.0.15",
     "postcss-html": "^1.3.0",
     "postcss-loader": "^6.2.1",
+    "prerender-spa-plugin": "^3.4.0",
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
