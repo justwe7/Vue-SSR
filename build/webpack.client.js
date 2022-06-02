@@ -6,7 +6,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const WebpackBar = require('webpackbar')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
-const PrerenderSPAPlugin = require('prerender-spa-plugin')
+// const PrerenderSPAPlugin = require('prerender-spa-plugin')
+// const PrerenderSPAPlugin = require('prerender-spa-plugin-next')
+// const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
 const { resolve } = require('./utils')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -92,12 +94,18 @@ module.exports = merge(baseConfig, {
     }
   }, */
   plugins: [
-    /* new PrerenderSPAPlugin({
-      // Required - The path to the webpack-outputted app to prerender.
-      staticDir: resolve('../dist'),
-      // Required - Routes to render.
-      routes: ['/home'],
-    }), */
+    // new PrerenderSPAPlugin({
+    //   // Required - The path to the webpack-outputted app to prerender.
+    //   staticDir: resolve('../dist'),
+    //   // Required - Routes to render.
+    //   routes: ['/home'],
+    //   // renderer: new Renderer({
+    //   //   timeout: 0,
+    //   //   maxConcurrentRoutes: 1,
+    //   //   renderAfterTime: 5000,
+    //   //   headless: true
+    //   // })
+    // }),
     new webpack.DefinePlugin({
       'process.env.TARGET_ENV': '"client"',
     }),
@@ -111,7 +119,7 @@ module.exports = merge(baseConfig, {
       filename: 'index.spa.html',
       template: resolve('../public/index.spa.html')
     }),
-    new ErrorOverlayPlugin(),
+    // new ErrorOverlayPlugin(),
     new VueSSRClientPlugin(),
     new WebpackBar({ name: 'client', color: 'green', profile: isProd, reporter: {
       // done(context) {
