@@ -144,6 +144,7 @@ config
       extensions: ['scss', 'vue', 'css']
   }])
 
+/* optimization */
 config
   .when(isProd,
     config => { // true
@@ -164,6 +165,6 @@ config
     },
     config => { // false
     }
-  );
-console.log(JSON.stringify(config.toConfig()))
+  )
+
 module.exports = config.toConfig()
