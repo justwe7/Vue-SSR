@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    页面 home
+    页面 home11
   </div>
 </template>
 <script type="text/ecmascript-6">

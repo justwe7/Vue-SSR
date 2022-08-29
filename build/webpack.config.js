@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-// const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
+const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -62,9 +62,7 @@ module.exports = {
         test: /\.(j|t)s$/,
         use: [
           {
-            loader: 'babel-loader'
-          },
-          {
+            // babel处理完之后再交给ts处理，
             loader: 'ts-loader', /* https://github.com/TypeStrong/ts-loader */
             options: {
                 // 指定特定的ts编译配置，为了区分脚本的ts配置
@@ -74,7 +72,10 @@ module.exports = {
                 /* 只做语言转换，而不做类型检查, 这里如果不设置成TRUE，就会HMR 报错 */
                 transpileOnly: true,
             }
-          }
+          },
+          {
+            loader: 'babel-loader'
+          },
         ],
         exclude: /node_modules/
       },
@@ -113,11 +114,13 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new CleanWebpackPlugin(),
-    // new ESLintPlugin({
-    //   emitWarning: true,
-    //   extensions: ['js', 'vue'],
-    //   fix: true
-    // }),
+    new ESLintPlugin({
+      cache: true,
+      emitWarning: true,
+      extensions: ['ts', 'js', 'vue'],
+      failOnError: false,
+      fix: true
+    }),
     new HtmlWebpackPlugin({
       inject: 'body',
       filename: 'index.html',

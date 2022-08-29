@@ -2,6 +2,7 @@ import { createApp } from 'vue' // Vue 3.x 引入 vue 的形式
 import App from './app.vue'
 import './style.scss'
 import router from './router'
+console.log(7)
 // import a from './assets/img/avatar.jpg'
 // console.log(a)
 // console.log(111)
@@ -16,7 +17,6 @@ import router from './router'
 //   await waitTime(7777)
 //   console.log(9527)
 // })
-
 
 const app = createApp(App) // 通过 createApp 初始化 app
 app.use(router)

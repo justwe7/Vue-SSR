@@ -5,25 +5,21 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:vue/essential',
-    'standard'
+    'plugin:vue/vue3-essential',
+    'standard-with-typescript'
   ],
-  // parser: '@babel/eslint-parser', // vue-eslint和babel-parser二者有冲突。编译器配置在根节点会导致vue sfc模式eslint报错
+  overrides: [
+  ],
   parserOptions: {
-    parser: '@babel/eslint-parser',
-    ecmaVersion: 12,
+    ecmaVersion: 'latest',
     sourceType: 'module',
-    ecmaFeatures: {
-      modules: true
-    }
+    project: './tsconfig.json'
   },
   plugins: [
     'vue'
   ],
   rules: {
-    // promise强制要求reject()抛出error【禁止】
-    'prefer-promise-reject-errors': 'off',
-    // vue 组件要求定义name【禁止】
-    'vue/multi-word-component-names': ['off', {}]
+    'vue/multi-word-component-names': ['off', {}],
+    '@typescript-eslint/no-unused-vars': ['off']
   }
 }
