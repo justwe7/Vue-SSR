@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = merge(baseConfig, {
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'eval-cheap-module-source-map',
   infrastructureLogging: { level: 'error' }, // devserver log
   stats: 'minimal', // errors-warnings 精简编译后log
   devServer: {
@@ -31,6 +31,5 @@ module.exports = merge(baseConfig, {
       // filename: '[name].css',
       // chunkFilename: '[id].css',
     }),
-    // new webpack.HotModuleReplacementPlugin(), // v4 [webpack-dev-server] "hot: true" automatically applies HMR plugin, you don't have to add it manually to your webpack configuration.
   ],
 })
