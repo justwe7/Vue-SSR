@@ -1,11 +1,9 @@
 <template>
-  <div id="app">
-    vue app
-    <router-link to="/">首页</router-link>
+    vue app12xxss
+    <router-link to="/">首页1</router-link>
     <router-link to="/detail">详情</router-link>
     <button @click="handleClick">bar</button>
     <router-view></router-view>
-  </div>
 </template>
 <script type="text/ecmascript-6">
 export default {
@@ -23,6 +21,6 @@ export default {
 </script>
 <style lang="scss" rel="stylesheet/scss">
 #app {
-  color: peru;
+  color: blue;
 }
 </style>

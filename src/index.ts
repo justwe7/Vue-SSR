@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { createApp } from 'vue' // Vue 3.x 引入 vue 的形式
 import App from './app.vue'
 import './style.scss'
 import router from './router'
@@ -17,8 +17,7 @@ import router from './router'
 //   console.log(9527)
 // })
 
-window.$vvm = new Vue({
-  el: '#app',
-  router,
-  render: h => h(App)
-})
+
+const app = createApp(App) // 通过 createApp 初始化 app
+app.use(router)
+app.mount('#app') // 将页面挂载到 root 节点

@@ -3,18 +3,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
+// const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
 
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   resolve: {
-    extensions: ['.js', '.vue'],
+    extensions: ['.ts', '.js', '.vue'],
   },
   entry: {
     // 'main': ['@babel/polyfill', './src/index.js'],
-    main: './src/index.js',
+    main: './src/index.ts',
   },
   output: {
     // filename: 'js/[name].js',
@@ -28,14 +27,14 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           // MiniCssExtractPlugin.loader, // 提取css文件,不与style-loader共存
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: (resourcePath, context) => {
-                return path.relative(path.dirname(resourcePath), context) + "/";
-              },
-            },
-          },
+          // {
+          //   loader: MiniCssExtractPlugin.loader,
+          //   options: {
+          //     publicPath: (resourcePath, context) => {
+          //       return path.relative(path.dirname(resourcePath), context) + "/";
+          //     },
+          //   },
+          // },
           // isProd ?
           //   {
           //     loader: MiniCssExtractPlugin.loader,
@@ -45,7 +44,7 @@ module.exports = {
           //       },
           //     },
           //   } :
-          //   'style-loader', // 打包css到style标签
+          'style-loader', // 打包css到style标签
           { loader: 'css-loader', options: { esModule: false } },
           {
             loader: 'postcss-loader',
@@ -60,10 +59,23 @@ module.exports = {
       },
       /* js */
       {
-        test: /\.js$/,
-        use: {
-          loader: 'babel-loader'
-        },
+        test: /\.(j|t)s$/,
+        use: [
+          {
+            loader: 'babel-loader'
+          },
+          {
+            loader: 'ts-loader', /* https://github.com/TypeStrong/ts-loader */
+            options: {
+                // 指定特定的ts编译配置，为了区分脚本的ts配置
+                // 注意这里的路径问题，按照自己项目来配置
+                configFile: path.resolve(__dirname, '../tsconfig.json'),
+                appendTsSuffixTo: [/\.vue$/],
+                /* 只做语言转换，而不做类型检查, 这里如果不设置成TRUE，就会HMR 报错 */
+                transpileOnly: true,
+            }
+          }
+        ],
         exclude: /node_modules/
       },
       {
@@ -101,11 +113,11 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new CleanWebpackPlugin(),
-    new ESLintPlugin({
-      emitWarning: true,
-      extensions: ['js', 'vue'],
-      fix: true
-    }),
+    // new ESLintPlugin({
+    //   emitWarning: true,
+    //   extensions: ['js', 'vue'],
+    //   fix: true
+    // }),
     new HtmlWebpackPlugin({
       inject: 'body',
       filename: 'index.html',
