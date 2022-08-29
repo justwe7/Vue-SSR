@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
+const StylelintPlugin = require('stylelint-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -120,6 +121,12 @@ module.exports = {
       extensions: ['ts', 'js', 'vue'],
       failOnError: false,
       fix: true
+    }),
+    new StylelintPlugin({
+      cache: true,
+      fix: true,
+      // failOnError: false,
+      extensions: ['scss', 'vue', 'css']
     }),
     new HtmlWebpackPlugin({
       inject: 'body',

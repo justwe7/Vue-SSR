@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    页面 home11
+    页面 home
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -9,7 +9,7 @@ export default {}
 <style lang="scss" rel="stylesheet/scss">
 .home {
   height: 300px;
-  color: #f00;
   background-color: yellowgreen;
+  color: #f00;
 }
 </style>
