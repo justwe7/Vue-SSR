@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin') // 优化编译时eslint展示
 const StylelintPlugin = require('stylelint-webpack-plugin')
+const WebpackBar = require('webpackbar')
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -133,6 +134,7 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, '../src/index.spa.html')
     }),
+    new WebpackBar()
     // new FriendlyErrorsWebpackPlugin({
     //   // compilationSuccessInfo: {
     //   //   messages: ['You application is running here http://localhost:3000'],

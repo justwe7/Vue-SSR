@@ -25,7 +25,7 @@
     "@babel/core": "^7.17.5",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
-    "@justwe7/stylelint-order-standard": "^0.0.2",
+    "@justwe7/stylelint-order-standard": "^0.0.1",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@vue/compiler-sfc": "^3.2.37",
     "autoprefixer": "^10.4.2",
@@ -60,7 +60,8 @@
     "webpack": "^5.70.0",
     "webpack-chain": "^6.5.1",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "webpack-dev-server": "^4.7.4",
+    "webpackbar": "^5.0.2"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.17.2",

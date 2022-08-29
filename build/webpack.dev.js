@@ -6,6 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = merge(baseConfig, {
   mode: 'development',
   devtool: 'inline-source-map',
+  infrastructureLogging: { level: 'error' }, // devserver log
+  stats: 'minimal', // errors-warnings 精简编译后log
   devServer: {
     client: {
       logging: 'error',
