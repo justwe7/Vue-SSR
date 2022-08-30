@@ -1,12 +1,14 @@
 const { merge } = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const baseConfig = require('./webpack.config.js')
 // const config = new Config()
 module.exports = merge(baseConfig, {
   mode: 'production',
   plugins: [
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name]-[fullhash:8].css",
     })
