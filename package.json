@@ -1,5 +1,5 @@
 {
-  "name": "vue-ssr",
+  "name": "vue3-spa",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -50,7 +50,8 @@
     "mini-css-extract-plugin": "^2.6.0",
     "postcss-loader": "^6.2.1",
     "sass": "^1.49.9",
-    "sass-loader": "^12.6.0",
+    "sass-loader": "^13.0.2",
+    "speed-measure-webpack-plugin": "^1.5.0",
     "style-loader": "^3.3.1",
     "stylelint": "^14.11.0",
     "stylelint-config-recommended-scss": "^7.0.0",

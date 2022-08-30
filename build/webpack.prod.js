@@ -18,6 +18,7 @@ module.exports = merge(baseConfig, {
     minimize: true,
     minimizer: [
       new TerserPlugin({
+        parallel: true, // 开启“多线程”，提高压缩效率
         extractComments: false,
         terserOptions: {
           format: {
