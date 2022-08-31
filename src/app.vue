@@ -14,6 +14,9 @@ export default {
       foo: 'vue app'
     }
   },
+  mounted () {
+    console.log(this.$store)
+  },
   methods: {
     handleClick () {
       console.log(8)

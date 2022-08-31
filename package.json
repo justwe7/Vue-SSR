@@ -7,7 +7,9 @@
     "dev": "webpack serve --config build/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config build/webpack.prod.js",
     "build2": "cross-env NODE_ENV=production webpack --config build/webpack.config.js",
-    "lint:fix": "eslint --ext .js,.vue src server --fix"
+    "lint": "eslint --ext .ts,.js,.vue src",
+    "lint:fix": "eslint --ext .ts,.js,.vue src server --fix",
+    "lint:css": "stylelint \"src/**/*.(vue|scss|css)\""
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,7 @@
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
+    "@justwe7/stylelint-order-standard": "^0.0.2",
     "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
@@ -46,20 +49,28 @@
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
+    "stylelint": "^14.11.0",
+    "stylelint-config-recommended-scss": "^7.0.0",
+    "stylelint-config-recommended-vue": "^1.4.0",
+    "stylelint-config-standard": "^28.0.0",
+    "stylelint-config-standard-scss": "^5.0.0",
+    "stylelint-webpack-plugin": "^3.3.0",
     "url-loader": "^4.1.1",
     "vue-loader": "^15.9.8",
-    "vue-router": "^3.5.3",
     "vue-style-loader": "^4.1.3",
     "vue-template-compiler": "^2.7.10",
     "webpack": "^5.70.0",
     "webpack-chain": "^6.5.1",
-    "webpackbar": "^5.0.2",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "webpack-dev-server": "^4.7.4",
+    "webpackbar": "^5.0.2"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.17.2",
-    "vue": "^2.7.10"
+    "axios": "^0.27.2",
+    "vue": "^2.7.10",
+    "vue-router": "^3.5.3",
+    "vuex": "^3.6.2"
   },
   "browserslist": [
     "> 1%",

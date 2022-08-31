@@ -10,9 +10,14 @@ module.exports = {
   ],
   overrides: [
   ],
+  // parser: '@babel/eslint-parser', // vue-eslint和babel-parser二者有冲突。编译器配置在根节点会导致vue sfc模式eslint报错
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module'
+    parser: '@babel/eslint-parser', // 解决诸如 error Parsing error: Unexpected token import 报错
+    ecmaVersion: 12,
+    sourceType: 'module',
+    ecmaFeatures: {
+      modules: true
+    }
   },
   plugins: [
     'vue'
